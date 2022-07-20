@@ -1,0 +1,135 @@
+perk_name,perk_url
+boon circle of healing,Boon:_Circle_of_Healing
+circle of healing,Boon:_Circle_of_Healing
+boon dark theory,Boon:_Dark_Theory
+dark theory,Boon:_Dark_Theory
+boon exponential,Boon:_Exponential
+exponential,Boon:_Exponential
+boon shadow step,Boon:_Shadow_Step
+shadow step,Boon:_Shadow_Step
+bt,Borrowed_Time
+break down,Breakdown
+break out,Breakout
+buckleup,Buckle_Up
+dh,Dead_Hard
+deadhard,Dead_Hard
+ds,Decisive_Strike
+detectives hunch,Detective's_Hunch
+fasttrack,Fast_Track
+flash bang,Flashbang
+flip flop,Flip-Flop
+flipflop,Flip-Flop
+light weight,Lightweight
+lith,Lithe
+mom,Mettle_of_Man
+open handed,Open-Handed
+plunderers instinct,Plunderer's_Instinct
+plunderer instinct,Plunderer's_Instinct
+quick and quiet,Quick_%26_Quiet
+qnq,Quick_%26_Quiet
+quick n quiet,Quick_%26_Quiet
+quick quiet,Quick_%26_Quiet
+self aware,Self-Aware
+selfaware,Self-Aware
+self care,Self-Care
+selfcare,Self-Care
+self preservation,Self-Preservation
+kitty,Spine_Chill
+spinechill,Spine_Chill
+suprinto bursto,Sprint_Burst
+supurinto burusuto,Sprint_Burst
+sprintburst,Sprint_Burst
+stakeout,Stake_Out
+this is not happening,This_Is_Not_Happening
+wake up,Wake_Up!
+well make it,We'll_Make_It
+were gonna live forever,We're_Gonna_Live_Forever
+a nurses calling,A_Nurse's_Calling
+nurses calling,A_Nurse's_Calling
+nurse's calling,A_Nurse's_Calling
+nurse calling,A_Nurse's_Calling
+a nurse calling,A_Nurse's_Calling
+bbq and chilli,Barbecue_%26_Chilli
+barbecue and chilli,Barbecue_%26_Chilli
+bbq & chilli,Barbecue_%26_Chilli
+barbecue & chilli,Barbecue_%26_Chilli
+bbq and chili,Barbecue_%26_Chilli
+barbecue and chili,Barbecue_%26_Chilli
+bbq & chili,Barbecue_%26_Chilli
+barbecue & chili,Barbecue_%26_Chilli
+bbq,Barbecue_%26_Chilli
+bloodwarden,Blood_Warden
+dead mans switch,Dead_Man's_Switch
+deadmans switch,Dead_Man's_Switch
+deadman's switch,Dead_Man's_Switch
+dragons grip,Dragon's_Grip
+franklins demise,Franklin's_Demise
+franklins,Franklin's_Demise
+hangmans trick,Hangman's_Trick
+hex blood favour,Hex:_Blood_Favour
+hex blood favor,Hex:_Blood_Favour
+hex: blood favor,Hex:_Blood_Favour
+blood favour,Hex:_Blood_Favour
+blood favor,Hex:_Blood_Favour
+hex crowd control,Hex:_Crowd_Control
+crowd control,Hex:_Crowd_Control
+hex devour hope,Hex:_Devour_Hope
+devour hope,Hex:_Devour_Hope
+hex haunted ground,Hex:_Haunted_Ground
+haunted ground,Hex:_Haunted_Ground
+hex haunted grounds,Hex:_Haunted_Ground
+hex: haunted grounds,Hex:_Haunted_Ground
+haunted grounds,Hex:_Haunted_Ground
+hex huntress lullaby,Hex:_Huntress_Lullaby
+huntress lullaby,Hex:_Huntress_Lullaby
+hex no one escapes death,Hex:_No_One_Escapes_Death
+hex noed,Hex:_No_One_Escapes_Death
+hex: noed,Hex:_No_One_Escapes_Death
+noed,Hex:_No_One_Escapes_Death
+hex pentimento,Hex:_Pentimento
+pentimento,Hex:_Pentimento
+hex plaything,Hex:_Plaything
+plaything,Hex:_Plaything
+hex retribution,Hex:_Retribution
+retribution,Hex:_Retribution
+hex ruin,Hex:_Ruin
+ruin,Hex:_Ruin
+hex the third seal,Hex:_The_Third_Seal
+the third seal,Hex:_The_Third_Seal
+hex: third seal,Hex:_The_Third_Seal
+hex third seal,Hex:_The_Third_Seal
+third seal,Hex:_The_Third_Seal
+hex thrill of the hunt,Hex:_Thrill_of_the_Hunt
+thrill of the hunt,Hex:_Thrill_of_the_Hunt
+hex undying,Hex:_Undying
+undying,Hex:_Undying
+im all ears,I'm_All_Ears
+knockout,Knock_Out
+light born,Lightborn
+madgrid,Mad_Grit
+monitor and abuse,Monitor_%26_Abuse
+monitor n abuse,Monitor_%26_Abuse
+monitor abuse,Monitor_%26_Abuse
+over charge,Overcharge
+pop,Pop_Goes_the_Weasel
+pgtw,Pop_Goes_the_Weasel
+save the best,Save_the_Best_for_Last
+scourge hook floods of rage,Scourge_Hook:_Floods_of_Rage
+floods of rage,Scourge_Hook:_Floods_of_Rage
+scourge hook: flood of rage,Scourge_Hook:_Floods_of_Rage
+scourge hook flood of rage,Scourge_Hook:_Floods_of_Rage
+flood of rage,Scourge_Hook:_Floods_of_Rage
+scourge hook gift of pain,Scourge_Hook:_Gift_of_Pain
+gift of pain,Scourge_Hook:_Gift_of_Pain
+scourge hook monstrous shrine,Scourge_Hook:_Monstrous_Shrine
+monstrous shrine,Scourge_Hook:_Monstrous_Shrine
+scourge hook pain resonance,Scourge_Hook:_Pain_Resonance
+pain resonance,Scourge_Hook:_Pain_Resonance
+shadow born,Shadowborn
+star struck,Starstruck
+strider,Stridor
+surveilance,Surveillance
+thanat,Thanatophobia
+deja vu,Déjà_Vu
+dejavu,Déjà_Vu
+coup de grace,Coup_de_Grâce
