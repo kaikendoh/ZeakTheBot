@@ -70,53 +70,62 @@ class Bot(commands.Bot):
         await self.handle_commands(message)
 
     # hello command
+    @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def hello(self, ctx: commands.Context):
-        await ctx.send(f'Hello {ctx.author.name}!')
+        await ctx.send(f'Hello @{ctx.author.name}!')
         await ctx.send('2nd message')
     
     # test command
     @commands.command()
     async def test(self, ctx: commands.Context, *, message):
         if message == 'test':
-            await ctx.send(f'Nice! You typed test!')
+            await ctx.send(f"You typed {message}!")
         else:
-            await ctx.send(f"You didn't type test! You typed {message}")
+            await ctx.send(f"You didn't type test!")
+
+    @commands.command()
+    async def perkhelp(self, ctx: commands.Context):
+        await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
 
     # perk command
+    # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def perk(self, ctx:commands.Context, *, perk):
-        # take perk from chat message and run through perk_scrape function
-        try:
-            perk_name, perk_desc = perk_scrape(perk)
-            perk_full = perk_name + ' - ' + perk_desc
+        if perk == 'help':
+            await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
+        else:
+            # take perk from chat message and run through perk_scrape function
+            try:
+                perk_name, perk_desc = perk_scrape(perk)
+                perk_full = perk_name + ' - ' + perk_desc
 
-            # if description is below twitch's character limit, send it to twitch chat
-            if len(perk_full) <= 500:
-                await ctx.send(perk_full)
+                # if description is below twitch's character limit, send it to twitch chat
+                if len(perk_full) <= 500:
+                    await ctx.send(perk_full)
 
-            # If greater than twitch's char limit, split it up
-            else:
-                # Check how many messages will need to be sent
-                sets = round(len(perk_desc)/500 + 0.5)
+                # If greater than twitch's char limit, split it up
+                else:
+                    # Check how many messages will need to be sent
+                    sets = round(len(perk_desc)/500 + 0.5)
 
-                # Split up the description by the last space in each 500 characters
-                for i in range(sets):
-                    if i == 0:
-                        s_index = perk_desc[:491 - len(perk_name)].rfind(' ')
-                        await ctx.send(perk_name + ' (' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc[:s_index])
-                        i += 1
-                        perk_desc = perk_desc[s_index + 1:]
-                    elif i == sets - 1:
-                        await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc)
-                    else:
-                        s_index = perk_desc[:494].rfind(' ')
-                        await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc[:s_index])
-                        i += 1
-                        perk_desc = perk_desc[s_index + 1:]
-        
-        except AttributeError:
-            await ctx.send('No perk found!')
+                    # Split up the description by the last space in each 500 characters
+                    for i in range(sets):
+                        if i == 0:
+                            s_index = perk_desc[:491 - len(perk_name)].rfind(' ')
+                            await ctx.send(perk_name + ' (' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc[:s_index])
+                            i += 1
+                            perk_desc = perk_desc[s_index + 1:]
+                        elif i == sets - 1:
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc)
+                        else:
+                            s_index = perk_desc[:494].rfind(' ')
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + perk_desc[:s_index])
+                            i += 1
+                            perk_desc = perk_desc[s_index + 1:]
+            
+            except AttributeError:
+                await ctx.send('No perk found!')
 
 bot = Bot()
 bot.run()
