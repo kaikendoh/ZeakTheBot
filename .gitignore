@@ -1,3 +1,5 @@
 .ipynb_checkpoints
 config.py
 *ipynb
+*.json
+t_*

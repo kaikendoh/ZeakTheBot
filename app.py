@@ -5,18 +5,21 @@ import re
 from twitchio.ext import commands
 from config import TWITCH_OAUTH_TOKEN
 
+# Twitch channels for the bot to listen to
 twitch_channels = ['kaikendoh', 'bongokaibot']
-articles = ['a', 'an', 'of', 'the', 'is']
 
-def title_except(s, exceptions):
+# Function to change the case of perk to capitalize the first letter
+# except for certain words
+def case_except(s):
+    exceptions = ['a', 'an', 'of', 'the', 'is', 'for', 'de', 'from']
     word_list = re.split(' ', s)
     final = [word_list[0].capitalize()]
     for word in word_list[1:]:
         final.append(word if word in exceptions else word.capitalize())
     return " ".join(final)
 
-def dbd_perk(perk):
-    perkurl = title_except(perk, articles).replace(" ", "_")
+def perk_scrape(perk):
+    perkurl = case_except(perk).replace(" ", "_")
     url = "https://deadbydaylight.fandom.com/wiki/{a}".format(a=perkurl)
 
     response = requests.get(url)
@@ -58,22 +61,34 @@ class Bot(commands.Bot):
 
     @commands.command()
     async def hello(self, ctx: commands.Context):
-        # Here we have a command hello, we can invoke our command with our prefix and command name
-        # e.g ?hello
-        # We can also give our commands aliases (different names) to invoke with.
-
-        # Send a hello back!
-        # Sending a reply back to the channel is easy... Below is an example.
-        await ctx.send(f'Hello yeah {ctx.author.name} and {other}!')
+        await ctx.send(f'Hello {ctx.author.name}!')
+        await ctx.send('2nd message')
     
     @commands.command()
     async def test(self, ctx: commands.Context, *, message):
-        await ctx.send(f'Echoing {message}')
+        if message == 'test':
+            await ctx.send(f'Nice! You typed test!')
+        else:
+            await ctx.send(f"You didn't type test! You typed {message}")
 
     @commands.command()
-    async def dbdperk(self, ctx:commands.Context, *, perk):
-        perk_desc = dbd_perk(perk)
-        await ctx.send(perk_desc)
+    async def perk(self, ctx:commands.Context, *, perk):
+        perk_desc = perk_scrape(perk)
+        if len(perk_desc) <= 500:
+            await ctx.send(perk_desc)
+        else:
+            sets = round(len(perk_desc)/500 + 0.5)
+            space_index = perk_desc[:494].rfind(' ')
+
+            for i in range(sets):
+                if i == 0:
+                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[:space_index])
+                    i += 1
+                    space_index += 1
+                else:
+                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[space_index:])
+                    i += 1
+                    space_index += 1
 
 bot = Bot()
 bot.run()
