@@ -78,17 +78,20 @@ class Bot(commands.Bot):
             await ctx.send(perk_desc)
         else:
             sets = round(len(perk_desc)/500 + 0.5)
-            space_index = perk_desc[:494].rfind(' ')
 
             for i in range(sets):
                 if i == 0:
-                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[:space_index])
+                    s_index = perk_desc[:494].rfind(' ')
+                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[:s_index])
                     i += 1
-                    space_index += 1
+                    perk_desc = perk_desc[s_index + 1:]
+                elif i == sets - 1:
+                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc)
                 else:
-                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[space_index:])
+                    s_index = perk_desc[:494].rfind(' ')
+                    await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') ' + perk_desc[:s_index])
                     i += 1
-                    space_index += 1
+                    perk_desc = perk_desc[s_index + 1:]
 
 bot = Bot()
 bot.run()
