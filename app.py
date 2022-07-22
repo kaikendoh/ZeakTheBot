@@ -22,6 +22,26 @@ def case_except(s):
         final.append(word if word in exceptions else word.capitalize())
     return " ".join(final)
 
+def shrine_scrape():
+
+    url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
+
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, 'html.parser')
+
+    sos = soup.find_all('div', class_='sosPerkDescName')
+    sos_list = []
+
+    for i in range(len(sos)):
+        sos_list.append(sos[i].get_text(separator=' ', strip=True))
+
+    sos_s = ', '.join(sos_list)
+    sos_time = soup.find('span', class_='luaClr clr clr4').get_text()
+    
+    return sos_s, sos_time
+
 # Function to scrape the perk from the dbd fandom wiki
 def perk_scrape(perk):
     if perks_df['perk_name'].eq(perk).any():
@@ -104,14 +124,17 @@ class Bot(commands.Bot):
         await ctx.send(f'Hello @{ctx.author.name}!')
         await ctx.send('2nd message')
     
-    # test command
+    # commands command
     @commands.command()
-    async def test(self, ctx: commands.Context, *, message):
-        if message == 'test':
-            await ctx.send(f"You typed {message}!")
-        else:
-            await ctx.send(f"You didn't type test!")
+    async def commandlist(self, ctx: commands.Context):
+        await ctx.send(f"?perk, ?status")
 
+    # shrine of secrets command
+    @commands.command()
+    async def shrine(self, ctx: commands.Context):
+        sos_list, remaining = shrine_scrape()
+        await ctx.send(f"The current perks in the Shrine of Secrets are: {sos_list}. The Shrine will refresh in {remaining}.")
+    
     @commands.command()
     async def perkhelp(self, ctx: commands.Context):
         await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
@@ -156,7 +179,7 @@ class Bot(commands.Bot):
                 await ctx.send('No perk found!')
 
 
-    # perk command
+    # status command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def status(self, ctx:commands.Context, *, status):
