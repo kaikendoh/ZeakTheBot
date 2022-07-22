@@ -42,6 +42,32 @@ def shrine_scrape():
     
     return sos_s, sos_time
 
+def killer_scrape():
+
+    url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
+
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, 'html.parser')
+
+    killers = soup.find_all('div', id='fpkiller')[0].get_text(', ', strip=True)[14:]
+    
+    return killers
+
+def survivor_scrape():
+
+    url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
+
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, 'html.parser')
+
+    survivors = soup.find_all('div', id='fpsurvivors')[0].get_text(', ', strip=True)[16:]
+    
+    return survivors
+
 # Function to scrape the perk from the dbd fandom wiki
 def perk_scrape(perk):
     if perks_df['perk_name'].eq(perk).any():
@@ -134,6 +160,16 @@ class Bot(commands.Bot):
     async def shrine(self, ctx: commands.Context):
         sos_list, remaining = shrine_scrape()
         await ctx.send(f"The current perks in the Shrine of Secrets are: {sos_list}. The Shrine will refresh in {remaining}.")
+
+    @commands.command()
+    async def killers(self, ctx: commands.Context):
+        killer = killer_scrape()
+        await ctx.send(f'The current killers are: {killer}.')
+
+    @commands.command()
+    async def survivors(self, ctx: commands.Context):
+        survivor = survivor_scrape()
+        await ctx.send(f'The current survivors are: {survivor}.')
     
     @commands.command()
     async def perkhelp(self, ctx: commands.Context):
