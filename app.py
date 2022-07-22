@@ -41,6 +41,33 @@ def perk_scrape(perk):
 
     return perk_name, perk_desc
 
+def status_scrape(status):
+    status = status.capitalize()
+
+    url = "https://deadbydaylight.fandom.com/wiki/Status_HUD"
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, "html.parser")
+
+    status_all = soup.find_all('td')
+
+    status_list = []
+    status_name = []
+
+    for i in range(len(status_all)):
+        status_list.append(status_all[i].get_text(separator=' ', strip=True))
+        try:
+            status_name.append(re.search('The (.*?) Status', status_list[i]).group(1))
+        except:
+            status_name.append(status_list[i])
+
+    status_df = pd.DataFrame({'status_name': status_name, 'status_desc': status_list})
+    
+    status_desc = status_df.loc[status_df['status_name'] == status, 'status_desc'].values[0]
+
+    return status, status_desc
+
 
 class Bot(commands.Bot):
 
@@ -48,7 +75,8 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='?', initial_channels=twitch_channels)
+        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='?', initial_channels=twitch_channels, 
+                         case_insensitive=True)
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -92,12 +120,12 @@ class Bot(commands.Bot):
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def perk(self, ctx:commands.Context, *, perk):
-        if perk == 'help':
+        if perk.lower() == 'help':
             await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
         else:
             # take perk from chat message and run through perk_scrape function
             try:
-                perk_name, perk_desc = perk_scrape(perk)
+                perk_name, perk_desc = perk_scrape(perk.lower())
                 perk_full = perk_name + ' - ' + perk_desc
 
                 # if description is below twitch's character limit, send it to twitch chat
@@ -107,7 +135,7 @@ class Bot(commands.Bot):
                 # If greater than twitch's char limit, split it up
                 else:
                     # Check how many messages will need to be sent
-                    sets = round(len(perk_desc)/500 + 0.5)
+                    sets = round(len(perk_full)/500 + 0.5)
 
                     # Split up the description by the last space in each 500 characters
                     for i in range(sets):
@@ -126,6 +154,44 @@ class Bot(commands.Bot):
             
             except AttributeError:
                 await ctx.send('No perk found!')
+
+
+    # perk command
+    # @commands.cooldown(1, 10, commands.Bucket.channel)
+    @commands.command()
+    async def status(self, ctx:commands.Context, *, status):
+        if status.lower() == 'help':
+            await ctx.send('Try typing ?status <status name> to get a description of the status. ie "?status exhausted"')
+        else:
+            try:
+                status_name, status_desc = status_scrape(status.lower())
+                status_full = status_name + ' - ' + status_desc
+
+                # if description is below twitch's character limit, send it to twitch chat
+                if len(status_full) <= 500:
+                    await ctx.send(status_full)
+
+                # If greater than twitch's char limit, split it up
+                else:
+                    # Check how many messages will need to be sent
+                    sets = round(len(status_full)/500 + 0.5)
+
+                    # Split up the description by the last space in each 500 characters
+                    for i in range(sets):
+                        if i == 0:
+                            s_index = status_desc[:491 - len(status_name)].rfind(' ')
+                            await ctx.send(status_name + ' (' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
+                            i += 1
+                            status_desc = status_desc[s_index + 1:]
+                        elif i == sets - 1:
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc)
+                        else:
+                            s_index = status_desc[:494].rfind(' ')
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
+                            i += 1
+                            status_desc = status_desc[s_index + 1:]
+            except AttributeError:
+                await ctx.send('No status found!')
 
 bot = Bot()
 bot.run()
