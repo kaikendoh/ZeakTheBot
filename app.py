@@ -127,7 +127,7 @@ class Bot(commands.Bot):
     # commands command
     @commands.command()
     async def commandlist(self, ctx: commands.Context):
-        await ctx.send(f"?perk, ?status")
+        await ctx.send(f"?perk, ?status, ?shrine")
 
     # shrine of secrets command
     @commands.command()
@@ -138,6 +138,10 @@ class Bot(commands.Bot):
     @commands.command()
     async def perkhelp(self, ctx: commands.Context):
         await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
+
+    @commands.command()
+    async def statushelp(self, ctx: commands.Context):
+        await ctx.send('Try typing ?status <status name> to get a description of the status. ie "?status exhausted""')
 
     # perk command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
