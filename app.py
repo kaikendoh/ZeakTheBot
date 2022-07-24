@@ -133,7 +133,7 @@ class Bot(commands.Bot):
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
 
-        self.sending.start()
+        # self.sending.start()
 
     async def event_message(self, message):
         # Messages with echo set to True are messages sent by the bot...
