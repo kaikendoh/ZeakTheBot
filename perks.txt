@@ -133,3 +133,4 @@ thanat,Thanatophobia
 deja vu,Déjà_Vu
 dejavu,Déjà_Vu
 coup de grace,Coup_de_Grâce
+bu,Buckle_Up

@@ -3,14 +3,14 @@ import requests
 import re
 import pandas as pd
 
-from twitchio.ext import commands
+from twitchio.ext import commands, routines
 from config import TWITCH_OAUTH_TOKEN
 
-# Import perks csv as dataframe
+# Import perks txt as dataframe
 perks_df = pd.read_csv('perks.txt')
 
 # Twitch channels for the bot to listen to
-twitch_channels = ['kaikendoh', 'bongokaibot']
+twitch_channels = ['kaikendoh', 'bongokaibot', 'zeakthehusky']
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
@@ -114,6 +114,9 @@ def status_scrape(status):
 
     return status, status_desc
 
+perkhelp = 'Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"'
+statushelp = 'Try typing ?status <status name> to get a description of the status. ie "?status exhausted"'
+
 
 class Bot(commands.Bot):
 
@@ -130,14 +133,20 @@ class Bot(commands.Bot):
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
 
+        self.sending.start()
+
     async def event_message(self, message):
         # Messages with echo set to True are messages sent by the bot...
         # For now we just want to ignore them...
         if message.echo:
             return
-
-        # Print the contents of our message to console...
-        print(message.content)
+        
+        elif message.content[0] == '?':
+            print(str(message.timestamp)[:19] + ' |*| ' + message.author.name + ': ' + message.content)
+        
+        else:
+            # Print the contents of our message to console...
+            print(str(message.timestamp)[:19] + ' | ' + message.author.name + ': ' + message.content)
 
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
@@ -148,43 +157,46 @@ class Bot(commands.Bot):
     @commands.command()
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
-        await ctx.send('2nd message')
     
-    # commands command
+    # commandslist command
     @commands.command()
     async def commandlist(self, ctx: commands.Context):
-        await ctx.send(f"?perk, ?status, ?shrine")
+        await ctx.send(f"Here are the commands that you can ask me, try typing help after the command to get more details! ?perk, ?status, ?shrine, ?survivors, ?killers")
 
-    # shrine of secrets command
+    # shrine command
     @commands.command()
     async def shrine(self, ctx: commands.Context):
         sos_list, remaining = shrine_scrape()
         await ctx.send(f"The current perks in the Shrine of Secrets are: {sos_list}. The Shrine will refresh in {remaining}.")
 
+    # killers command
     @commands.command()
     async def killers(self, ctx: commands.Context):
         killer = killer_scrape()
         await ctx.send(f'The current killers are: {killer}.')
 
+    # survivors command
     @commands.command()
     async def survivors(self, ctx: commands.Context):
         survivor = survivor_scrape()
         await ctx.send(f'The current survivors are: {survivor}.')
     
+    # perkhelp command
     @commands.command()
     async def perkhelp(self, ctx: commands.Context):
-        await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
+        await ctx.send(perkhelp)
 
+    # statushelp
     @commands.command()
     async def statushelp(self, ctx: commands.Context):
-        await ctx.send('Try typing ?status <status name> to get a description of the status. ie "?status exhausted""')
+        await ctx.send(statushelp)
 
     # perk command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def perk(self, ctx:commands.Context, *, perk):
         if perk.lower() == 'help':
-            await ctx.send('Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"')
+            await ctx.send(perkhelp)
         else:
             # take perk from chat message and run through perk_scrape function
             try:
@@ -224,7 +236,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def status(self, ctx:commands.Context, *, status):
         if status.lower() == 'help':
-            await ctx.send('Try typing ?status <status name> to get a description of the status. ie "?status exhausted"')
+            await ctx.send(statushelp)
         else:
             try:
                 status_name, status_desc = status_scrape(status.lower())
@@ -255,6 +267,13 @@ class Bot(commands.Bot):
                             status_desc = status_desc[s_index + 1:]
             except AttributeError:
                 await ctx.send('No status found!')
+
+    # @routines.routine(seconds=5.0, iterations=5)
+    # async def sending(self):
+    #     await self.wait_for_ready() 
+    #     channel = self.get_channel('kaikendoh')
+    #     await channel.send('routine test')
+    
 
 bot = Bot()
 bot.run()
