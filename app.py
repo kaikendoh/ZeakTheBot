@@ -1,13 +1,19 @@
 from bs4 import BeautifulSoup
 import requests
 import re
+import gspread
 import pandas as pd
 
 from twitchio.ext import commands, routines
 from config import TWITCH_OAUTH_TOKEN
 
-# Import perks txt as dataframe
-perks_df = pd.read_csv('perks.txt')
+# Import perks google sheets as dataframe
+sa = gspread.service_account(filename='service_account.json')
+sh = sa.open("dbd-twitch-bot")
+
+wks = sh.worksheet('Perks')
+
+perks_df = pd.DataFrame(wks.get_all_records())
 
 # Twitch channels for the bot to listen to
 twitch_channels = ['kaikendoh', 'bongokaibot', 'zeakthehusky']
