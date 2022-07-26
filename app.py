@@ -3,20 +3,17 @@ import requests
 import re
 import gspread
 import pandas as pd
+# from time import process_time
 
 from twitchio.ext import commands, routines
-from config import TWITCH_OAUTH_TOKEN
+from config import TWITCH_BOT_USERNAME, TWITCH_OAUTH_TOKEN, GOOGLE_SHEET, TWITCH_CHANNELS
 
 # Import perks google sheets as dataframe
 sa = gspread.service_account(filename='service_account.json')
-sh = sa.open("dbd-twitch-bot")
-
-wks = sh.worksheet('Perks')
-
-perks_df = pd.DataFrame(wks.get_all_records())
+sh = sa.open(GOOGLE_SHEET)
 
 # Twitch channels for the bot to listen to
-twitch_channels = ['kaikendoh', 'bongokaibot', 'zeakthehusky']
+twitch_channels = TWITCH_CHANNELS
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
@@ -76,6 +73,9 @@ def survivor_scrape():
 
 # Function to scrape the perk from the dbd fandom wiki
 def perk_scrape(perk):
+    wks = sh.worksheet('Perks')
+    perks_df = pd.DataFrame(wks.get_all_records())
+
     if perks_df['perk_name'].eq(perk).any():
         perkurl = perks_df.loc[perks_df['perk_name'] == perk, 'perk_url'].values[0]
     else:
@@ -120,8 +120,8 @@ def status_scrape(status):
 
     return status, status_desc
 
-perkhelp = 'Try typing ?perk <perk name> to get a description of the perk. ie "?perk spine chill"'
-statushelp = 'Try typing ?status <status name> to get a description of the status. ie "?status exhausted"'
+perkhelp = 'Try typing !perk <perk name> to get a description of the perk. ie "!perk spine chill"'
+statushelp = 'Try typing !status <status name> to get a description of the status. ie "!status exhausted"'
 
 
 class Bot(commands.Bot):
@@ -130,7 +130,7 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='?', initial_channels=twitch_channels, 
+        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='!', initial_channels=twitch_channels, 
                          case_insensitive=True)
 
     async def event_ready(self):
@@ -147,7 +147,7 @@ class Bot(commands.Bot):
         if message.echo:
             return
         
-        elif message.content[0] == '?':
+        elif message.content[0] == '!':
             print(str(message.timestamp)[:19] + ' |*| ' + message.author.name + ': ' + message.content)
         
         else:
@@ -179,12 +179,14 @@ class Bot(commands.Bot):
     @commands.command()
     async def killers(self, ctx: commands.Context):
         killer = killer_scrape()
+        print(len(killer))
         await ctx.send(f'The current killers are: {killer}.')
 
     # survivors command
     @commands.command()
     async def survivors(self, ctx: commands.Context):
         survivor = survivor_scrape()
+        print(len(survivor))
         await ctx.send(f'The current survivors are: {survivor}.')
     
     # perkhelp command
@@ -279,7 +281,6 @@ class Bot(commands.Bot):
     #     await self.wait_for_ready() 
     #     channel = self.get_channel('kaikendoh')
     #     await channel.send('routine test')
-    
 
 bot = Bot()
 bot.run()
