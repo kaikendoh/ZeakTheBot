@@ -5,3 +5,4 @@ config.py
 t_*
 perks.csv
 perks_full.csv
+__pycache__

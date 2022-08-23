@@ -6,14 +6,11 @@ import pandas as pd
 # from time import process_time
 
 from twitchio.ext import commands, routines
-from config import TWITCH_BOT_USERNAME, TWITCH_OAUTH_TOKEN, GOOGLE_SHEET, TWITCH_CHANNELS
+from config import *
 
 # Import perks google sheets as dataframe
 sa = gspread.service_account(filename='service_account.json')
 sh = sa.open(GOOGLE_SHEET)
-
-# Twitch channels for the bot to listen to
-twitch_channels = TWITCH_CHANNELS
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
@@ -25,6 +22,7 @@ def case_except(s):
         final.append(word if word in exceptions else word.capitalize())
     return " ".join(final)
 
+# Function to grab the current perks in the Shrine of Secrets and when it will refresh
 def shrine_scrape():
 
     url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
@@ -45,6 +43,7 @@ def shrine_scrape():
     
     return sos_s, sos_time
 
+# Function to grab all the current killers from dbd fandom wiki
 def killer_scrape():
 
     url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
@@ -58,6 +57,7 @@ def killer_scrape():
     
     return killers
 
+# Function to grab all the current survivor names from dbd fandom wiki
 def survivor_scrape():
 
     url = "https://deadbydaylight.fandom.com/wiki/Dead_by_Daylight_Wiki"
@@ -120,6 +120,17 @@ def status_scrape(status):
 
     return status, status_desc
 
+def raid_scrape(msg):
+    wks = sh.worksheet('Raid Msg')
+    zeak_df = pd.DataFrame(wks.get_all_records())
+    
+    msg = msg.lower()
+    subMsg = zeak_df.loc[zeak_df['Command'] == msg, 'Subs'].values[0]
+    freeMsg = zeak_df.loc[zeak_df['Command'] == msg, 'Free'].values[0]
+
+    return subMsg, freeMsg
+
+
 perkhelp = 'Try typing !perk <perk name> to get a description of the perk. ie "!perk spine chill"'
 statushelp = 'Try typing !status <status name> to get a description of the status. ie "!status exhausted"'
 
@@ -130,7 +141,7 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='!', initial_channels=twitch_channels, 
+        super().__init__(token=TWITCH_OAUTH_TOKEN, prefix='!', initial_channels=TWITCH_CHANNELS, 
                          case_insensitive=True)
 
     async def event_ready(self):
@@ -163,11 +174,25 @@ class Bot(commands.Bot):
     @commands.command()
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
+
+    @commands.command()
+    async def raid(self, ctx:commands.Context, *, cmd):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            subMsg, freeMsg = raid_scrape(cmd)
+            await ctx.send(subMsg)
+            await ctx.send(freeMsg)
+
+    @commands.command()
+    async def spam(self, ctx:commands.Context, *, cmd):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            subMsg, freeMsg = raid_scrape(cmd)
+            await ctx.send(4 * (subMsg + ' '))
+            await ctx.send(4 * (freeMsg + ' '))
     
     # commandslist command
     @commands.command()
     async def commandlist(self, ctx: commands.Context):
-        await ctx.send(f"Here are the commands that you can ask me, try typing help after the command to get more details! ?perk, ?status, ?shrine, ?survivors, ?killers")
+        await ctx.send(f"Here are the commands that you can ask me, try typing help after the command to get more details! !perk, !status, !shrine, !survivors, !killers")
 
     # shrine command
     @commands.command()
