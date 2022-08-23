@@ -11,6 +11,7 @@ sh = sa.open(GOOGLE_SHEET)
 
 perkhelp = 'Try typing !perk <perk name> to get a description of the perk. ie "!perk spine chill"'
 statushelp = 'Try typing !status <status name> to get a description of the status. ie "!status exhausted"'
+namehelp = 'Try typing !stats <killer name> to get a summary of that particular killer. ie "!stats trapper"'
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
@@ -73,11 +74,11 @@ def survivor_scrape():
 
 # Function to scrape the perk from the dbd fandom wiki
 def perk_scrape(perk):
-    wks = sh.worksheet('Perks')
+    wks = sh.worksheet('Names')
     perks_df = pd.DataFrame(wks.get_all_records())
 
-    if perks_df['perk_name'].eq(perk).any():
-        perkurl = perks_df.loc[perks_df['perk_name'] == perk, 'perk_url'].values[0]
+    if perks_df['name'].eq(perk).any():
+        perkurl = perks_df.loc[perks_df['name'] == perk, 'url'].values[0]
     else:
         perkurl = case_except(perk).strip().replace(" ", "_")
 
@@ -120,3 +121,49 @@ def status_scrape(status):
     status_desc = status_df.loc[status_df['status_name'] == status, 'status_desc'].values[0]
 
     return status, status_desc
+
+# Function to scrape the status from the dbd fandom wiki
+def stats_scrape(name):
+    wks = sh.worksheet('Names')
+    names_df = pd.DataFrame(wks.get_all_records())
+
+    if names_df['name'].eq(name).any():
+        nameurl = names_df.loc[names_df['name'] == name.lower(), 'url'].values[0]
+    else:
+        nameurl = case_except(name).strip().replace(" ", "_")
+
+    url = "https://deadbydaylight.fandom.com/wiki/{a}".format(a=nameurl)
+
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, 'html.parser')
+
+    name_index = td_scrape(soup, 'Name')
+    name = soup.find_all('td', class_='valueColumn')[name_index].get_text(separator=' ', strip=True).replace('\n', '')
+
+    radius_index = td_scrape(soup, 'Terror Radius')
+    radius = soup.find_all('td', class_='valueColumn')[radius_index].get_text(separator=' ', strip=True).replace('\n', '')
+
+    mv_index = td_scrape(soup, 'Movement Speed')
+    mv = soup.find_all('td', class_='valueColumn')[mv_index].get_text(separator=' ', strip=True).replace('\xa0', '').replace(' | ','-')
+
+    try:
+        amv_index = td_scrape(soup, 'Alternate Movement speed')
+        amv = soup.find_all('td', class_='valueColumn')[amv_index].get_text(separator=' ', strip=True).replace('\xa0', '').replace(' | ','-')
+
+    except:
+        summary = f"Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}"
+        return summary
+
+    summary = f"Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}, {amv}"
+
+    return summary
+
+def td_scrape(soup, title):
+    titles = soup.find_all('td', class_='titleColumn')
+    titles_strip = [x.get_text(separator=' ', strip=True).replace('\n', '') for x in titles]
+
+    col_index = titles_strip.index(title)
+
+    return col_index

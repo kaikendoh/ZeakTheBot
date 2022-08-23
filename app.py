@@ -93,6 +93,11 @@ class Bot(commands.Bot):
     async def statushelp(self, ctx: commands.Context):
         await ctx.send(statushelp)
 
+    # statshelp command
+    @commands.command()
+    async def statshelp(self, ctx: commands.Context):
+        await ctx.send(namehelp)
+
     # perk command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
@@ -169,6 +174,18 @@ class Bot(commands.Bot):
                             status_desc = status_desc[s_index + 1:]
             except AttributeError:
                 await ctx.send('No status found!')
+
+    @commands.command()
+    async def stats(self, ctx:commands.Context, *, name):
+        if name.lower() == 'help':
+            await ctx.send(namehelp)
+        else:
+            try:
+                summary = stats_scrape(name.lower())
+                await ctx.send(summary)
+
+            except AttributeError:
+                await ctx.send('No killer found!')
 
     # @routines.routine(seconds=5.0, iterations=5)
     # async def sending(self):
