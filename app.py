@@ -44,6 +44,11 @@ class Bot(commands.Bot):
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
 
+    # @commands.command()
+    # async def test(self, ctx: commands.Context):
+    #     toggle = next(cycle(["1","2"]))
+    #     await ctx.send(toggle)
+
     @commands.command()
     async def raid(self, ctx:commands.Context, *, cmd):
         if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
@@ -57,6 +62,11 @@ class Bot(commands.Bot):
             subMsg, freeMsg = raid_scrape(cmd)
             await ctx.send(4 * (subMsg + ' '))
             await ctx.send(4 * (freeMsg + ' '))
+
+    @commands.command()
+    async def lurk(self, ctx: commands.Context):
+        emote = heartRand()
+        await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
     
     # commandslist command
     @commands.command()

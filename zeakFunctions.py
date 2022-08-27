@@ -1,10 +1,18 @@
 import gspread
 import pandas as pd
 from config import *
+import random
 
 # Import perks google sheets as dataframe
 sa = gspread.service_account(filename='service_account.json')
 sh = sa.open(GOOGLE_SHEET)
+
+lurkMsg = 'lurks away to be comfy in their blanket zeakthComfy Thanks for the support'
+
+def heartRand():
+    emotes = ['zeakthLove', 'zeakthPride']
+    heart = random.choice(emotes)
+    return(heart)
 
 def raid_scrape(msg):
     wks = sh.worksheet('Raid Msg')
