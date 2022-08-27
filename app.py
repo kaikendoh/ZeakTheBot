@@ -43,12 +43,13 @@ class Bot(commands.Bot):
     @commands.command()
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
-
+    
     # @commands.command()
     # async def test(self, ctx: commands.Context):
     #     toggle = next(cycle(["1","2"]))
     #     await ctx.send(toggle)
 
+    # raid command
     @commands.command()
     async def raid(self, ctx:commands.Context, *, cmd):
         if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
@@ -56,6 +57,7 @@ class Bot(commands.Bot):
             await ctx.send(subMsg)
             await ctx.send(freeMsg)
 
+    # spam command
     @commands.command()
     async def spam(self, ctx:commands.Context, *, cmd):
         if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
@@ -63,6 +65,7 @@ class Bot(commands.Bot):
             await ctx.send(4 * (subMsg + ' '))
             await ctx.send(4 * (freeMsg + ' '))
 
+    # lurk command
     @commands.command()
     async def lurk(self, ctx: commands.Context):
         emote = heartRand()
