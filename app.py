@@ -70,6 +70,11 @@ class Bot(commands.Bot):
     async def lurk(self, ctx: commands.Context):
         emote = heartRand()
         await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
+
+    # boop command
+    @commands.command()
+    async def tboop(self, ctx: commands.Context):
+        await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
     
     # commandslist command
     @commands.command()
