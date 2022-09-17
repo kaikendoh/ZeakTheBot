@@ -19,6 +19,10 @@ class Bot(commands.Bot):
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
 
+        await bot.wait_for_ready()
+        channel = bot.get_channel('zeakthehusky')
+        await channel.send('Beep Boop zeakthHype')
+
         # self.sending.start()
 
     async def event_message(self, message):
@@ -69,11 +73,6 @@ class Bot(commands.Bot):
     @commands.command()
     async def lurk(self, ctx: commands.Context):
         emote = heartRand()
-        await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
-
-    # boop command
-    @commands.command()
-    async def tboop(self, ctx: commands.Context):
         await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
     
     # commandslist command
