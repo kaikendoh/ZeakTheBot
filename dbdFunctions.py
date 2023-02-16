@@ -12,6 +12,7 @@ sh = sa.open(GOOGLE_SHEET)
 perkhelp = 'Try typing !perk <perk name> to get a description of the perk. ie "!perk spine chill"'
 statushelp = 'Try typing !status <status name> to get a description of the status. ie "!status exhausted"'
 namehelp = 'Try typing !stats <killer name> to get a summary of that particular killer. ie "!stats trapper"'
+uniquehelp = 'Try typing !unique <killer name> to get the unique perks of that particular killer. ie "!unique artist"'
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
@@ -170,3 +171,29 @@ def td_scrape(soup, title):
     col_index = titles_strip.index(title)
 
     return col_index
+
+def u_perks(name):
+    wks = sh.worksheet('Names')
+    names_df = pd.DataFrame(wks.get_all_records())
+
+    if names_df['name'].eq(name).any():
+        nameurl = names_df.loc[names_df['name'] == name.lower(), 'url'].values[0]
+    else:
+        nameurl = case_except(name).strip().replace(" ", "_")
+
+    url = "https://deadbydaylight.fandom.com/wiki/{a}".format(a=nameurl)
+
+    response = requests.get(url)
+    webpage = response.content
+
+    soup = BeautifulSoup(webpage, 'html.parser')
+
+    name = soup.find_all('table', class_='infoboxtable')[0].find_all('th', class_='center bold')[0].get_text(separator=' ', strip=True)
+
+    perk1 = soup.find_all('table', class_='wikitable')[0].find_all('th')[1].get_text(strip=True)
+    perk2 = soup.find_all('table', class_='wikitable')[0].find_all('th')[3].get_text(strip=True)
+    perk3 = soup.find_all('table', class_='wikitable')[0].find_all('th')[5].get_text(strip=True)
+
+    perks = f"{name}'s unique perks are: {perk1}, {perk2}, and {perk3}."
+
+    return perks

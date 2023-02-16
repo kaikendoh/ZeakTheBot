@@ -94,7 +94,7 @@ class Bot(commands.Bot):
         if len(killer) < 500:
             await ctx.send(f'The current killers are: {killer}.')
 
-        # If greater than twitch's char limit, split it up
+        # If greater than twitch's char limit (500), split it up
         else:
             # Check how many messages will need to be sent
             sets = round(len(killer)/500 + 0.5)
@@ -122,7 +122,7 @@ class Bot(commands.Bot):
         if len(survivor) < 500:
             await ctx.send(f'The current survivors are: {survivor}.')
 
-        # If greater than twitch's char limit, split it up
+        # If greater than twitch's char limit (500), split it up
         else:
             # Check how many messages will need to be sent
             sets = round(len(survivor)/500 + 0.5)
@@ -169,11 +169,11 @@ class Bot(commands.Bot):
                 perk_name, perk_desc = perk_scrape(perk.lower())
                 perk_full = perk_name + ' - ' + perk_desc
 
-                # if description is below twitch's character limit, send it to twitch chat
+                # if description is below twitch's character limit (500), send it to twitch chat
                 if len(perk_full) <= 500:
                     await ctx.send(perk_full)
 
-                # If greater than twitch's char limit, split it up
+                # If greater than twitch's char limit (500), split it up
                 else:
                     # Check how many messages will need to be sent
                     sets = round(len(perk_full)/500 + 0.5)
@@ -208,11 +208,11 @@ class Bot(commands.Bot):
                 status_name, status_desc = status_scrape(status.lower())
                 status_full = status_name + ' - ' + status_desc
 
-                # if description is below twitch's character limit, send it to twitch chat
+                # if description is below twitch's character limit (500), send it to twitch chat
                 if len(status_full) <= 500:
                     await ctx.send(status_full)
 
-                # If greater than twitch's char limit, split it up
+                # If greater than twitch's char limit (500), split it up
                 else:
                     # Check how many messages will need to be sent
                     sets = round(len(status_full)/500 + 0.5)
@@ -242,6 +242,18 @@ class Bot(commands.Bot):
             try:
                 summary = stats_scrape(name.lower())
                 await ctx.send(summary)
+
+            except AttributeError:
+                await ctx.send('No killer found!')
+
+    @commands.command()
+    async def unique(self, ctx:commands.Context, *, name):
+        if name.lower() == 'help':
+            await ctx.send(uniquehelp)
+        else:
+            try:
+                perks = u_perks(name.lower())
+                await ctx.send(perks)
 
             except AttributeError:
                 await ctx.send('No killer found!')
