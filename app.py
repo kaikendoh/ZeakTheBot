@@ -78,7 +78,12 @@ class Bot(commands.Bot):
     # commandslist command
     @commands.command()
     async def commandlist(self, ctx: commands.Context):
-        await ctx.send(f"Here are the commands that you can ask me, try typing help after the command to get more details! !perk, !status, !shrine, !survivors, !killers")
+        await ctx.send(zeakBotMsg)
+
+    # commandslist command
+    @commands.command()
+    async def zeakbot(self, ctx: commands.Context):
+        await ctx.send(zeakBotMsg)
 
     # shrine command
     @commands.command()
@@ -156,6 +161,11 @@ class Bot(commands.Bot):
     @commands.command()
     async def statshelp(self, ctx: commands.Context):
         await ctx.send(namehelp)
+
+    # uniquehelp command
+    @commands.command()
+    async def uniquehelp(self, ctx: commands.Context):
+        await ctx.send(uniquehelp)
 
     # perk command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
