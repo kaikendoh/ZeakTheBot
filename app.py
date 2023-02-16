@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         channel = bot.get_channel('zeakthehusky')
-        await channel.send('Beep Boop zeakthHype')
+        # await channel.send('Beep Boop zeakthHype')
 
         # self.sending.start()
 
@@ -91,14 +91,56 @@ class Bot(commands.Bot):
     async def killers(self, ctx: commands.Context):
         killer = killer_scrape()
         print(len(killer))
-        await ctx.send(f'The current killers are: {killer}.')
+        if len(killer) < 500:
+            await ctx.send(f'The current killers are: {killer}.')
+
+        # If greater than twitch's char limit, split it up
+        else:
+            # Check how many messages will need to be sent
+            sets = round(len(killer)/500 + 0.5)
+
+            # Split up the description by the last space in each 500 characters
+            for i in range(sets):
+                if i == 0:
+                    s_index = killer[:460].rfind(' ')
+                    await ctx.send(f'The current killers are: {killer[:s_index]}.')
+                    i += 1
+                    killer = killer[s_index + 1:]
+                elif i == sets - 1:
+                    await ctx.send(killer)
+                else:
+                    s_index = killer[:494].rfind(' ')
+                    await ctx.send(killer[:s_index])
+                    i += 1
+                    killer = killer[s_index + 1:]
 
     # survivors command
     @commands.command()
     async def survivors(self, ctx: commands.Context):
         survivor = survivor_scrape()
         print(len(survivor))
-        await ctx.send(f'The current survivors are: {survivor}.')
+        if len(survivor) < 500:
+            await ctx.send(f'The current survivors are: {survivor}.')
+
+        # If greater than twitch's char limit, split it up
+        else:
+            # Check how many messages will need to be sent
+            sets = round(len(survivor)/500 + 0.5)
+
+            # Split up the description by the last space in each 500 characters
+            for i in range(sets):
+                if i == 0:
+                    s_index = survivor[:460].rfind(' ')
+                    await ctx.send(f'The current survivors are: {survivor[:s_index]}.')
+                    i += 1
+                    survivor = survivor[s_index + 1:]
+                elif i == sets - 1:
+                    await ctx.send(survivor)
+                else:
+                    s_index = survivor[:494].rfind(' ')
+                    await ctx.send(survivor[:s_index])
+                    i += 1
+                    survivor = survivor[s_index + 1:]
     
     # perkhelp command
     @commands.command()

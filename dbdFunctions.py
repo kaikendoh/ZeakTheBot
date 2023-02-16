@@ -139,6 +139,9 @@ def stats_scrape(name):
 
     soup = BeautifulSoup(webpage, 'html.parser')
 
+    title = soup.find_all('table', class_='infoboxtable')[0].find_all('th', class_='center bold')[0].get_text(separator=' ', strip=True)
+    title = re.sub(' +', ' ', title)
+    
     name_index = td_scrape(soup, 'Name')
     name = soup.find_all('td', class_='valueColumn')[name_index].get_text(separator=' ', strip=True).replace('\n', '')
 
@@ -153,10 +156,10 @@ def stats_scrape(name):
         amv = soup.find_all('td', class_='valueColumn')[amv_index].get_text(separator=' ', strip=True).replace('\xa0', '').replace(' | ','-')
 
     except:
-        summary = f"Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}"
+        summary = f"Title: {title} || Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}"
         return summary
 
-    summary = f"Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}, {amv}"
+    summary = f"Title: {title} || Name: {name} || Terror Radius: {radius} || Movement Speed: {mv}, {amv}"
 
     return summary
 
