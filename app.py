@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         channel = bot.get_channel('zeakthehusky')
-        # await channel.send('Beep Boop zeakthHype')
+        await channel.send('Beep Boop zeakthHype')
 
         # self.sending.start()
 
