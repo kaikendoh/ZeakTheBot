@@ -12,7 +12,7 @@ sh = sa.open(GOOGLE_SHEET)
 perkhelp = 'Try typing !perk <perk name> to get a description of the perk. ie "!perk spine chill"'
 statushelp = 'Try typing !status <status name> to get a description of the status. ie "!status exhausted"'
 namehelp = 'Try typing !stats <killer name> to get a summary of that particular killer. ie "!stats trapper"'
-uniquehelp = 'Try typing !unique <killer name> to get the unique perks of that particular killer. ie "!unique artist"'
+uniquehelp = 'Try typing !unique <killer/survivor name> to get the unique perks of that particular killer or survivor. ie "!unique artist"'
 
 # Function to change the case of perk to capitalize the first letter
 # except for certain words
