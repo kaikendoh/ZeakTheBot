@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         channel = bot.get_channel('zeakthehusky')
-        await channel.send('zeakthHype Beep Boop zeakthHype')
+        # await channel.send('zeakthHype Beep Boop zeakthHype')
 
         # self.sending.start()
 
@@ -256,6 +256,12 @@ class Bot(commands.Bot):
             except AttributeError:
                 await ctx.send('No killer found!')
 
+            except IndexError:
+                await ctx.send('No killer found!')
+
+            except ValueError:
+                await ctx.send('No stat info on survivors!')
+
     @commands.command()
     async def unique(self, ctx:commands.Context, *, name):
         if name.lower() == 'help':
@@ -266,7 +272,10 @@ class Bot(commands.Bot):
                 await ctx.send(perks)
 
             except AttributeError:
-                await ctx.send('No killer found!')
+                await ctx.send('No survivor/killer found!')
+
+            except IndexError:
+                await ctx.send('No survivor/killer found!')
 
     # @routines.routine(seconds=5.0, iterations=5)
     # async def sending(self):
