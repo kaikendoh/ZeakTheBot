@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         channel = bot.get_channel('zeakthehusky')
-        # await channel.send('zeakthHype Beep Boop zeakthHype')
+        await channel.send('zeakthHype Beep Boop zeakthHype')
 
         # self.sending.start()
 
@@ -152,9 +152,9 @@ class Bot(commands.Bot):
     async def perkhelp(self, ctx: commands.Context):
         await ctx.send(perkhelp)
 
-    # statushelp
+    # sehelp
     @commands.command()
-    async def statushelp(self, ctx: commands.Context):
+    async def sehelp(self, ctx: commands.Context):
         await ctx.send(statushelp)
 
     # statshelp command
@@ -210,7 +210,7 @@ class Bot(commands.Bot):
     # status command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
-    async def status(self, ctx:commands.Context, *, status):
+    async def se(self, ctx:commands.Context, *, status):
         if status.lower() == 'help':
             await ctx.send(statushelp)
         else:
@@ -242,7 +242,42 @@ class Bot(commands.Bot):
                             i += 1
                             status_desc = status_desc[s_index + 1:]
             except AttributeError:
-                await ctx.send('No status found!')
+                await ctx.send('No status effect found!')
+
+    @commands.command()
+    async def statuseffect(self, ctx:commands.Context, *, status):
+        if status.lower() == 'help':
+            await ctx.send(statushelp)
+        else:
+            try:
+                status_name, status_desc = status_scrape(status.lower())
+                status_full = status_name + ' - ' + status_desc
+
+                # if description is below twitch's character limit (500), send it to twitch chat
+                if len(status_full) <= 500:
+                    await ctx.send(status_full)
+
+                # If greater than twitch's char limit (500), split it up
+                else:
+                    # Check how many messages will need to be sent
+                    sets = round(len(status_full)/500 + 0.5)
+
+                    # Split up the description by the last space in each 500 characters
+                    for i in range(sets):
+                        if i == 0:
+                            s_index = status_desc[:491 - len(status_name)].rfind(' ')
+                            await ctx.send(status_name + ' (' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
+                            i += 1
+                            status_desc = status_desc[s_index + 1:]
+                        elif i == sets - 1:
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc)
+                        else:
+                            s_index = status_desc[:494].rfind(' ')
+                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
+                            i += 1
+                            status_desc = status_desc[s_index + 1:]
+            except AttributeError:
+                await ctx.send('No status effect found!')
 
     @commands.command()
     async def stats(self, ctx:commands.Context, *, name):
