@@ -10,7 +10,7 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_BOT_TOKEN, prefix='!', initial_channels=TWITCH_CHANNELS, client_id=BOT_CLIENT_ID,
+        super().__init__(token=TWITCH_BOT_TOKEN, prefix='!', initial_channels=TWITCH_CHANNELS,
                          case_insensitive=True)
 
     async def event_ready(self):
@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         # channel = bot.get_channel('kaikendoh')
-        channel = bot.get_channel('kaikendoh')
+        channel = bot.get_channel('zeakthehusky')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
         # self.sending.start()
@@ -48,11 +48,6 @@ class Bot(commands.Bot):
     @commands.command()
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
-    
-    # @commands.command()
-    # async def test(self, ctx: commands.Context):
-    #     toggle = next(cycle(["1","2"]))
-    #     await ctx.send(toggle)
 
     # raid command
     @commands.command()
@@ -78,11 +73,21 @@ class Bot(commands.Bot):
     
     # discord command
     @commands.command()
-    async def discord(self, ctx: commands.Context):
-        mybot = self.create_user(int(ctx.author.id), ctx.author.name)
-        print(ctx.author.id)
-        print(ctx.author.name)
-        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message="testing", color="green")
+    async def tdiscord(self, ctx: commands.Context):
+        mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="green")
+
+    # twitter command
+    @commands.command()
+    async def ttwitter(self, ctx: commands.Context):
+        mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="green")
+
+    # tiktok command
+    @commands.command()
+    async def ttiktok(self, ctx: commands.Context):
+        mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="green")
     
     # commandslist command
     @commands.command()
