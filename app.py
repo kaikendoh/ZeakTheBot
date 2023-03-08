@@ -10,7 +10,7 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=TWITCH_BOT_TOKEN, prefix='!', initial_channels=TWITCH_CHANNELS,
+        super().__init__(token=TWITCH_BOT_TOKEN, prefix='!', initial_channels=TWITCH_CHANNELS, client_id=BOT_CLIENT_ID,
                          case_insensitive=True)
 
     async def event_ready(self):
@@ -21,7 +21,7 @@ class Bot(commands.Bot):
 
         await bot.wait_for_ready()
         # channel = bot.get_channel('kaikendoh')
-        channel = bot.get_channel('zeakthehusky', 'kaikendoh')
+        channel = bot.get_channel('kaikendoh')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
         # self.sending.start()
@@ -82,7 +82,7 @@ class Bot(commands.Bot):
         mybot = self.create_user(int(ctx.author.id), ctx.author.name)
         print(ctx.author.id)
         print(ctx.author.name)
-        await mybot.chat_announcement(token=TWITCH_BCSTR_TOKEN, moderator_id=self.user_id, message="testing", color="green")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message="testing", color="green")
     
     # commandslist command
     @commands.command()
