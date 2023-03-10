@@ -10,6 +10,10 @@ sh = sa.open(GOOGLE_SHEET)
 lurkMsg = 'lurks away to be comfy in their blanket zeakthComfy Thanks for the support'
 zeakBotMsg = "Here are the commands that you can ask me, try typing help after the command to get more details! !perk, !status, !shrine, !survivors, !killers, !stats, !unique"
 
+discordMsg = "Come join Zeak's husky house! Get notified when I go live and vibe with cool people. 18+ only please. https://discord.gg/MM9UKbqJpV zeakthDance"
+twitterMsg = "Need some funny memes or want to know when I go live? Follow me at https://twitter.com/ZeakTheHusky zeakthLove"
+tiktokMsg = "Want to check out some classic moments from stream? Follow me at https://www.tiktok.com/@zeakthehusky zeakthLUL"
+
 def heartRand():
     emotes = ['zeakthLove', 'zeakthPride']
     heart = random.choice(emotes)
