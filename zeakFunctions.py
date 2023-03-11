@@ -14,6 +14,10 @@ discordMsg = "Come join Zeak's husky house! Get notified when I go live and vibe
 twitterMsg = "Need some funny memes or want to know when I go live? Follow me at https://twitter.com/ZeakTheHusky zeakthLove"
 tiktokMsg = "Want to check out some classic moments from stream? Follow me at https://www.tiktok.com/@zeakthehusky zeakthLUL"
 
+vcMsg = "To join voice chat, Zeak would need to at least game in vc with you once off stream. Feel free to join the discord, a bunch of off stream games happen there! 18+ only please. https://discord.gg/MM9UKbqJpV zeakthDance"
+fcMsg1 = "Zeak's Steam friend code is 165494960 and his DBD friend code is ZeakTheHusky.TTV#92e6"
+fcMsg2 = "Zeak's DBD friend code is ZeakTheHusky.TTV#92e6"
+
 def heartRand():
     emotes = ['zeakthLove', 'zeakthPride']
     heart = random.choice(emotes)
@@ -28,3 +32,64 @@ def raid_scrape(msg):
     freeMsg = zeak_df.loc[zeak_df['Command'] == msg, 'Free'].values[0]
 
     return subMsg, freeMsg
+
+def usrInc(user, col):
+    wks = sh.worksheet('Counts')
+    
+    match col:
+        case 'ban':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,2).value)
+                usrCnt += 1
+
+                wks.update_cell(usrRow, 2, usrCnt)
+
+            except:
+                lastRow = len(wks.get_all_values()) + 1
+                wks.update_cell(lastRow, 1, user)
+                wks.update_cell(lastRow, 2, 1)
+
+                usrCnt = 1
+        case 'boop':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,3).value)
+                usrCnt += 1
+
+                wks.update_cell(usrRow, 3, usrCnt)
+
+            except:
+                lastRow = len(wks.get_all_values()) + 1
+                wks.update_cell(lastRow, 1, user)
+                wks.update_cell(lastRow, 3, 1)
+
+                usrCnt = 1
+
+    return usrCnt
+
+def usrCnt(user, col):
+    wks = sh.worksheet('Counts')
+    
+    match col:
+        case 'ban':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,2).value)
+
+            except:
+                usrCnt = 0
+
+        case 'boop':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,3).value)
+
+            except:
+                usrCnt = 0
+
+    return usrCnt

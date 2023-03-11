@@ -1,4 +1,5 @@
 from twitchio.ext import commands, routines
+import twitchio
 from config import *
 from dbdFunctions import *
 from zeakFunctions import *
@@ -20,8 +21,8 @@ class Bot(commands.Bot):
         print(f'User id is | {self.user_id}')
 
         await bot.wait_for_ready()
-        # channel = bot.get_channel('kaikendoh')
-        channel = bot.get_channel('zeakthehusky')
+        channel = bot.get_channel('kaikendoh')
+        # channel = bot.get_channel('zeakthehusky')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
         # self.sending.start()
@@ -43,11 +44,21 @@ class Bot(commands.Bot):
         # We must let the bot know we want to handle and invoke our commands...
         await self.handle_commands(message)
 
+    # test command
+    @commands.command()
+    async def test(self, ctx: commands.Context, user: twitchio.User):
+        if ctx.author.name == 'kaikendoh':
+            chanInfo = await self.fetch_channel(user.name)
+            authInfo = ctx.get_user(ctx.author.name)
+            await ctx.send(f'Hello @{ctx.author.name}! You mentioned {user.display_name}, last seen playing {chanInfo.game_name}')
+            await ctx.send(f'Sent by {authInfo}')
+
     # hello command
     @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
     async def hello(self, ctx: commands.Context):
         await ctx.send(f'Hello @{ctx.author.name}!')
+        
 
     # raid command
     @commands.command()
@@ -69,8 +80,78 @@ class Bot(commands.Bot):
     @commands.command()
     async def lurk(self, ctx: commands.Context):
         emote = heartRand()
-        await ctx.send(f'@{ctx.author.name} {lurkMsg} {emote}')
-    
+        await ctx.send(f'@{ctx.author.display_name} {lurkMsg} {emote}')
+
+    # voice chat command
+    @commands.command()
+    async def vc(self, ctx: commands.Context):
+        mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+        await ctx.send(vcMsg)
+        # await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="green")
+
+    # friend code command
+    @commands.command()
+    async def fc(self, ctx: commands.Context):
+        await ctx.send(fcMsg1)
+
+    # ban command
+    @commands.command()
+    @commands.cooldown(1, 5, commands.Bucket.channel)
+    async def ban(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None or user.name == ctx.author.name:
+            await ctx.send(f"You can't ban yourself!")
+        else:
+            name = user.display_name
+            banCnt = usrInc(name, 'ban')
+            await ctx.send(f"No! Bad {name}! You get bonked! zeakthBonk You've been banned {banCnt} times!")
+
+    # bancount command
+    @commands.command()
+    async def bancount(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None or user.name == ctx.author.name:
+            name = ctx.author.display_name
+            banCnt = usrCnt(name, 'ban')
+            if banCnt == 0:
+                await ctx.send(f"Such a good boy! You haven't been banned yet!")
+            else:
+                await ctx.send(f"You've been banned {banCnt} times!")
+        else:
+            name = user.display_name
+            banCnt = usrCnt(name, 'ban')
+            await ctx.send(f"{user.display_name} has been banned {banCnt} times!")
+
+    # boop command
+    @commands.command()
+    @commands.cooldown(1, 3, commands.Bucket.channel)
+    async def boop(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None:    
+            name = 'ZeakTheHusky'
+            boopCnt = usrCnt(name, 'boop')
+            await ctx.send(f"{ctx.author.display_name} booped {name}'s snoot! zeakthBoop They've been booped {boopCnt} times!")
+
+        elif user.name == ctx.author.name:
+            await ctx.send(f"You can't boop yourself!")
+
+        else:    
+            name = user.display_name
+            boopCnt = usrCnt(name, 'boop')
+            await ctx.send(f"{ctx.author.display_name} booped {name}! zeakthBoop They've been booped {boopCnt} times!")
+
+    # boopcount command
+    @commands.command()
+    async def boopcount(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None or user.name == ctx.author.name:
+            name = ctx.author.display_name
+            boopCnt = usrCnt(name, 'boop')
+            if boopCnt == 0:
+                await ctx.send(f"No boops yet!")
+            else:
+                await ctx.send(f"You've been booped {boopCnt} times!")
+        else:
+            name = user.display_name
+            boopCnt = usrCnt(name, 'boop')
+            await ctx.send(f"{user.display_name} has been booped {boopCnt} times!")
+
     # discord command
     @commands.command()
     async def tdiscord(self, ctx: commands.Context):
