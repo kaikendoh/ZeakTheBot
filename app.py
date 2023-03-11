@@ -19,13 +19,16 @@ class Bot(commands.Bot):
         # We are logged in and ready to chat and use commands...
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
+        
+        # Starting routines that have been created
+        # self.sending.start()
+        self.socials.start()
 
         await bot.wait_for_ready()
-        channel = bot.get_channel('kaikendoh')
-        # channel = bot.get_channel('zeakthehusky')
+        # channel = bot.get_channel('kaikendoh')
+        channel = bot.get_channel('zeakthehusky')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
-        # self.sending.start()
 
     async def event_message(self, message):
         # Messages with echo set to True are messages sent by the bot...
@@ -156,20 +159,28 @@ class Bot(commands.Bot):
     @commands.command()
     async def tdiscord(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
-        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="green")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="primary")
 
     # twitter command
     @commands.command()
     async def ttwitter(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
-        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="green")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="primary")
 
     # tiktok command
     @commands.command()
     async def ttiktok(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
-        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="green")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="primary")
     
+    # socials command
+    @commands.command()
+    async def socials(self, ctx: commands.Context):
+        mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="purple")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="blue")
+        await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="green")
+
     # commandslist command
     @commands.command()
     async def commandlist(self, ctx: commands.Context):
@@ -407,11 +418,18 @@ class Bot(commands.Bot):
             except IndexError:
                 await ctx.send('No survivor/killer found!')
 
-    # @routines.routine(seconds=5.0, iterations=5)
+    # @routines.routine(seconds=2.0, iterations=0)
     # async def sending(self):
     #     await self.wait_for_ready() 
-    #     channel = self.get_channel('kaikendoh')
-    #     await channel.send('routine test')
+    #     channel = self.get_channel('zeakthehusky')
+    #     await channel.send(discordMsg)
+
+    @routines.routine(minutes=20.0, iterations=0)
+    async def socials(self):
+        await self.wait_for_ready() 
+        channel = self.get_channel('zeakthehusky')
+        await channel.send(socialsMsg)
+
 
 bot = Bot()
 bot.run()

@@ -2,6 +2,7 @@ import gspread
 import pandas as pd
 from config import *
 import random
+from itertools import cycle
 
 # Import perks google sheets as dataframe
 sa = gspread.service_account(filename='service_account.json')
@@ -13,6 +14,7 @@ zeakBotMsg = "Here are the commands that you can ask me, try typing help after t
 discordMsg = "Come join Zeak's husky house! Get notified when I go live and vibe with cool people. 18+ only please. https://discord.gg/MM9UKbqJpV zeakthDance"
 twitterMsg = "Need some funny memes or want to know when I go live? Follow me at https://twitter.com/ZeakTheHusky zeakthLove"
 tiktokMsg = "Want to check out some classic moments from stream? Follow me at https://www.tiktok.com/@zeakthehusky zeakthLUL"
+socialsMsg = "Want to follow Zeak in every possible way? Try !discord, !twitter, !tiktok, or check out his linktree at https://linktr.ee/ZeakTheHusky zeakthBoop"
 
 vcMsg = "To join voice chat, Zeak would need to at least game in vc with you once off stream. Feel free to join the discord, a bunch of off stream games happen there! 18+ only please. https://discord.gg/MM9UKbqJpV zeakthDance"
 fcMsg1 = "Zeak's Steam friend code is 165494960 and his DBD friend code is ZeakTheHusky.TTV#92e6"
@@ -22,6 +24,11 @@ def heartRand():
     emotes = ['zeakthLove', 'zeakthPride']
     heart = random.choice(emotes)
     return(heart)
+
+def alternate():
+    while True:
+        yield 0
+        yield 1
 
 def raid_scrape(msg):
     wks = sh.worksheet('Raid Msg')
