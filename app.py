@@ -85,6 +85,14 @@ class Bot(commands.Bot):
         emote = heartRand()
         await ctx.send(f'@{ctx.author.display_name} {lurkMsg} {emote}')
 
+    # shoutout command
+    @commands.command()
+    async def sso(self, ctx: commands.Context, user: twitchio.User):
+        if ctx.author.is_mod:
+            chanInfo = await self.fetch_channel(user.name)
+            authInfo = ctx.get_user(ctx.author.name)
+            await ctx.send(f'{user.display_name} is an awesome streamer! They were last seen playing {chanInfo.game_name}. Check them out at http://twitch.tv/{user.channel.name} zeakthDance')
+
     # voice chat command
     @commands.command()
     async def vc(self, ctx: commands.Context):
