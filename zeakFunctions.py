@@ -20,6 +20,10 @@ vcMsg = "To join voice chat, Zeak would need to at least game in vc with you onc
 fcMsg1 = "Zeak's Steam friend code is 165494960 and his DBD friend code is ZeakTheHusky.TTV#92e6"
 fcMsg2 = "Zeak's DBD friend code is ZeakTheHusky.TTV#92e6"
 
+qMsg = "Zeak will regularly ask rhetorical questions and talk to himself about the game. Please do not answer these questions unless Zeak SPECIFICALLY asks chat. You will get warned and then timed out. This rule is for PvE/Story based games"
+spoilerMsg = "Please do not spoil or explain game mechanics unless explicitly asked by Zeak."
+ttvMsg = "Looks like there's a TTV in our lobby, if they are live and you wanna see from their perspective, please be kind and respectful no matter what zeakthLove"
+
 def heartRand():
     emotes = ['zeakthLove', 'zeakthPride']
     heart = random.choice(emotes)
@@ -39,6 +43,14 @@ def raid_scrape(msg):
     freeMsg = zeak_df.loc[zeak_df['Command'] == msg, 'Free'].values[0]
 
     return subMsg, freeMsg
+
+def clip_scrape(msg):
+    wks = sh.worksheet('Clips')
+    
+    clipRow = wks.find(msg).row
+    clipLink = wks.cell(clipRow, 2).value
+
+    return clipLink
 
 def usrInc(user, col):
     wks = sh.worksheet('Counts')
@@ -75,6 +87,14 @@ def usrInc(user, col):
 
                 usrCnt = 1
 
+        case 'himbo':
+            usrRow = wks.find(user).row
+
+            usrCnt = int(wks.cell(usrRow,5).value)
+            usrCnt += 1
+
+            wks.update_cell(usrRow, 5, usrCnt)
+
     return usrCnt
 
 def usrCnt(user, col):
@@ -100,3 +120,9 @@ def usrCnt(user, col):
                 usrCnt = 0
 
     return usrCnt
+
+def himboSet(himboNum):
+    wks = sh.worksheet('Counts')
+
+    wks.update_cell(2,5,himboNum)
+

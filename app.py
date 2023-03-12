@@ -20,6 +20,7 @@ class Bot(commands.Bot):
         print(f'Logged in as | {self.nick}')
         print(f'User id is | {self.user_id}')
         
+        himboSet(0)
         # Starting routines that have been created
         # self.sending.start()
         self.socials.start()
@@ -71,6 +72,12 @@ class Bot(commands.Bot):
             await ctx.send(subMsg)
             await ctx.send(freeMsg)
 
+    # raid command
+    @commands.command()
+    async def clip(self, ctx:commands.Context, *, cmd):
+        clipLink = clip_scrape(cmd)
+        await ctx.send(clipLink)
+
     # spam command
     @commands.command()
     async def spam(self, ctx:commands.Context, *, cmd):
@@ -87,7 +94,7 @@ class Bot(commands.Bot):
 
     # shoutout command
     @commands.command()
-    async def sso(self, ctx: commands.Context, user: twitchio.User):
+    async def so(self, ctx: commands.Context, user: twitchio.User):
         if ctx.author.is_mod:
             chanInfo = await self.fetch_channel(user.name)
             authInfo = ctx.get_user(ctx.author.name)
@@ -104,6 +111,12 @@ class Bot(commands.Bot):
     @commands.command()
     async def fc(self, ctx: commands.Context):
         await ctx.send(fcMsg1)
+
+    # shoutout command
+    @commands.command()
+    async def biobreak(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'Quote 31: I HAVE TO PEE')
 
     # ban command
     @commands.command()
@@ -163,21 +176,36 @@ class Bot(commands.Bot):
             boopCnt = usrCnt(name, 'boop')
             await ctx.send(f"{user.display_name} has been booped {boopCnt} times!")
 
+    # himbo command
+    @commands.command()
+    async def himbo(self, ctx: commands.Context):
+        name = 'ZeakTheHusky'
+        himboCnt = usrInc(name, 'himbo')
+        await ctx.send(f"Zeak has had {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # himbo command
+    @commands.command()
+    async def himboset(self, ctx: commands.Context, *, cmd):
+        # himboCnt = usrInc(name, 'himbo')
+        setCount = int(cmd)
+        himboSet(setCount)
+        await ctx.send(f"Zeak has had {setCount} himbo moment(s) this stream zeakthHuh")
+
     # discord command
     @commands.command()
-    async def tdiscord(self, ctx: commands.Context):
+    async def discord(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="primary")
 
     # twitter command
     @commands.command()
-    async def ttwitter(self, ctx: commands.Context):
+    async def twitter(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="primary")
 
     # tiktok command
     @commands.command()
-    async def ttiktok(self, ctx: commands.Context):
+    async def tiktok(self, ctx: commands.Context):
         mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="primary")
     
@@ -188,6 +216,39 @@ class Bot(commands.Bot):
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=discordMsg, color="purple")
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=twitterMsg, color="blue")
         await mybot.chat_announcement(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, message=tiktokMsg, color="green")
+
+    # misspelled socials command
+    @commands.command()
+    async def disocrd(self, ctx: commands.Context):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            name = 'ZeakTheHusky'
+            himboCnt = usrInc(name, 'himbo')
+            await ctx.send(f"zeakthLUL Zeak misspelled the command. Now it's {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # misspelled socials command
+    @commands.command()
+    async def tiwtter(self, ctx: commands.Context):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            name = 'ZeakTheHusky'
+            himboCnt = usrInc(name, 'himbo')
+            await ctx.send(f"zeakthLUL Zeak misspelled the command. Now it's {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # misspelled socials command
+    @commands.command()
+    async def twiter(self, ctx: commands.Context):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            name = 'ZeakTheHusky'
+            himboCnt = usrInc(name, 'himbo')
+            await ctx.send(f"zeakthLUL Zeak misspelled the command. Now it's {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # aster command
+    @commands.command()
+    async def aster(self, ctx: commands.Context):
+        if ctx.author.name == 'asterthebull':
+            await ctx.send("That's you!")
+        else:
+            msg = 'AsterBongo'
+            await ctx.send(f"{msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg}")
 
     # commandslist command
     @commands.command()
@@ -268,7 +329,7 @@ class Bot(commands.Bot):
 
     # sehelp
     @commands.command()
-    async def sehelp(self, ctx: commands.Context):
+    async def statushelp(self, ctx: commands.Context):
         await ctx.send(statushelp)
 
     # statshelp command
@@ -324,42 +385,7 @@ class Bot(commands.Bot):
     # status command
     # @commands.cooldown(1, 10, commands.Bucket.channel)
     @commands.command()
-    async def se(self, ctx:commands.Context, *, status):
-        if status.lower() == 'help':
-            await ctx.send(statushelp)
-        else:
-            try:
-                status_name, status_desc = status_scrape(status.lower())
-                status_full = status_name + ' - ' + status_desc
-
-                # if description is below twitch's character limit (500), send it to twitch chat
-                if len(status_full) <= 500:
-                    await ctx.send(status_full)
-
-                # If greater than twitch's char limit (500), split it up
-                else:
-                    # Check how many messages will need to be sent
-                    sets = round(len(status_full)/500 + 0.5)
-
-                    # Split up the description by the last space in each 500 characters
-                    for i in range(sets):
-                        if i == 0:
-                            s_index = status_desc[:491 - len(status_name)].rfind(' ')
-                            await ctx.send(status_name + ' (' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
-                            i += 1
-                            status_desc = status_desc[s_index + 1:]
-                        elif i == sets - 1:
-                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc)
-                        else:
-                            s_index = status_desc[:494].rfind(' ')
-                            await ctx.send('(' + str(i + 1) + '/' + str(sets) + ') - ' + status_desc[:s_index])
-                            i += 1
-                            status_desc = status_desc[s_index + 1:]
-            except AttributeError:
-                await ctx.send('No status effect found!')
-
-    @commands.command()
-    async def statuseffect(self, ctx:commands.Context, *, status):
+    async def status(self, ctx:commands.Context, *, status):
         if status.lower() == 'help':
             await ctx.send(statushelp)
         else:
