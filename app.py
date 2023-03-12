@@ -145,7 +145,7 @@ class Bot(commands.Bot):
 
         else:    
             name = user.display_name
-            boopCnt = usrCnt(name, 'boop')
+            boopCnt = usrInc(name, 'boop')
             await ctx.send(f"{ctx.author.display_name} booped {name}! zeakthBoop They've been booped {boopCnt} times!")
 
     # boopcount command
