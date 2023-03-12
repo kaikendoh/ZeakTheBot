@@ -137,7 +137,7 @@ class Bot(commands.Bot):
     async def boop(self, ctx: commands.Context, user: twitchio.User=None):
         if user == None:    
             name = 'ZeakTheHusky'
-            boopCnt = usrCnt(name, 'boop')
+            boopCnt = usrInc(name, 'boop')
             await ctx.send(f"{ctx.author.display_name} booped {name}'s snoot! zeakthBoop They've been booped {boopCnt} times!")
 
         elif user.name == ctx.author.name:
