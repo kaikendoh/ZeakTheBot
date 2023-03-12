@@ -50,12 +50,8 @@ class Bot(commands.Bot):
 
     # test command
     @commands.command()
-    async def test(self, ctx: commands.Context, user: twitchio.User):
-        if ctx.author.name == 'kaikendoh':
-            chanInfo = await self.fetch_channel(user.name)
-            authInfo = ctx.get_user(ctx.author.name)
-            await ctx.send(f'Hello @{ctx.author.name}! You mentioned {user.display_name}, last seen playing {chanInfo.game_name}')
-            await ctx.send(f'Sent by {authInfo}')
+    async def test(self, ctx:commands.Context, *, cmd):
+        print(cmd)
 
     # hello command
     @commands.cooldown(1, 10, commands.Bucket.channel)
@@ -74,9 +70,14 @@ class Bot(commands.Bot):
 
     # raid command
     @commands.command()
-    async def clip(self, ctx:commands.Context, *, cmd):
-        clipLink = clip_scrape(cmd)
-        await ctx.send(clipLink)
+    async def clip(self, ctx:commands.Context, *, cmd=None):
+        if cmd == None:
+            clipLink = clip_rand()
+            await ctx.send(clipLink)
+
+        else:
+            clipLink = clip_scrape(cmd)
+            await ctx.send(clipLink)
 
     # spam command
     @commands.command()
@@ -136,6 +137,12 @@ class Bot(commands.Bot):
         if ctx.author.is_mod:
             await ctx.send(f'{qMsg}')
 
+    # questions command
+    @commands.command()
+    async def bs(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{bsMsg}')
+
     # jam command
     @commands.command()
     async def jam(self, ctx: commands.Context):
@@ -159,13 +166,13 @@ class Bot(commands.Bot):
             name = ctx.author.display_name
             banCnt = usrCnt(name, 'ban')
             if banCnt == 0:
-                await ctx.send(f"Such a good boy! You haven't been banned yet!")
+                await ctx.send(f"Such a good boy! You haven't been banned yet! zeakthPat")
             else:
                 await ctx.send(f"You've been banned {banCnt} times!")
         else:
             name = user.display_name
             banCnt = usrCnt(name, 'ban')
-            await ctx.send(f"{user.display_name} has been banned {banCnt} times!")
+            await ctx.send(f"{user.display_name} has been banned {banCnt} times! zeakthOwO")
 
     # boop command
     @commands.command()
@@ -199,12 +206,65 @@ class Bot(commands.Bot):
             boopCnt = usrCnt(name, 'boop')
             await ctx.send(f"{user.display_name} has been booped {boopCnt} times!")
 
+    # hug command
+    @commands.command()
+    @commands.cooldown(1, 3, commands.Bucket.channel)
+    async def hug(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None:    
+            name = 'ZeakTheHusky'
+            hugCnt = usrInc(name, 'hug')
+            await ctx.send(f"{ctx.author.display_name} hugged {name}! ZeakHug They've been hugged {hugCnt} times!")
+
+        elif user.name == ctx.author.name:
+            await ctx.send(f"You can't hug yourself!")
+
+        else:    
+            name = user.display_name
+            hugCnt = usrInc(name, 'hug')
+            await ctx.send(f"{ctx.author.display_name} hugged {name}! ZeakHug They've been hugged {hugCnt} times!")
+
+    # boopcount command
+    @commands.command()
+    async def hugcount(self, ctx: commands.Context, user: twitchio.User=None):
+        if user == None or user.name == ctx.author.name:
+            name = ctx.author.display_name
+            hugCnt = usrCnt(name, 'hug')
+            if hugCnt == 0:
+                await ctx.send(f"No hugs yet!")
+            else:
+                await ctx.send(f"You've been hugged {hugCnt} times!")
+        else:
+            name = user.display_name
+            hugCnt = usrCnt(name, 'hug')
+            await ctx.send(f"{user.display_name} has been hugged {hugCnt} times!")
+
     # himbo command
     @commands.command()
     async def himbo(self, ctx: commands.Context):
         name = 'ZeakTheHusky'
         himboCnt = usrInc(name, 'himbo')
         await ctx.send(f"Zeak has had {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # himbocount command
+    @commands.command()
+    async def himbocount(self, ctx: commands.Context):
+        name = 'ZeakTheHusky'
+        himboCnt = usrCnt(name, 'himbo')
+        await ctx.send(f"Zeak has had {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # piss command
+    @commands.command()
+    async def piss(self, ctx: commands.Context):
+        name = 'ZeakTheHusky'
+        himboCnt = usrInc(name, 'piss')
+        await ctx.send(f"Zeak has said PISS {himboCnt} times zeakthAngy")
+
+    # pisscount command
+    @commands.command()
+    async def pisscount(self, ctx: commands.Context):
+        name = 'ZeakTheHusky'
+        himboCnt = usrCnt(name, 'piss')
+        await ctx.send(f"Zeak has said PISS {himboCnt} times zeakthAngy")
 
     # himbo command
     @commands.command()

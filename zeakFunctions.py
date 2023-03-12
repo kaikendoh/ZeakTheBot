@@ -22,7 +22,9 @@ fcMsg2 = "Zeak's DBD friend code is ZeakTheHusky.TTV#92e6"
 
 qMsg = "Zeak will regularly ask rhetorical questions and talk to himself about the game. Please do not answer these questions unless Zeak SPECIFICALLY asks chat. You will get warned and then timed out. This rule is for PvE/Story based games"
 spoilerMsg = "Please do not spoil or explain game mechanics unless explicitly asked by Zeak."
+bsMsg = "Please do not backseat Zeak, let him suffer through his struggles! zeakthSad"
 ttvMsg = "Looks like there's a TTV in our lobby, if they are live and you wanna see from their perspective, please be kind and respectful no matter what zeakthLove"
+
 jamMsg = "Dance Dance AsterBongo catJAM zeakthDance zeakthDance AsterBongo dogJAM Dance Dance"
 
 def heartRand():
@@ -49,6 +51,16 @@ def clip_scrape(msg):
     wks = sh.worksheet('Clips')
     
     clipRow = wks.find(msg).row
+    clipLink = wks.cell(clipRow, 2).value
+
+    return clipLink
+
+def clip_rand():
+    wks = sh.worksheet('Clips')
+    
+    clipCnt = len(wks.col_values(1))
+
+    clipRow = random.randrange(2, clipCnt)
     clipLink = wks.cell(clipRow, 2).value
 
     return clipLink
@@ -88,6 +100,22 @@ def usrInc(user, col):
 
                 usrCnt = 1
 
+        case 'hug':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,4).value)
+                usrCnt += 1
+
+                wks.update_cell(usrRow, 4, usrCnt)
+
+            except:
+                lastRow = len(wks.get_all_values()) + 1
+                wks.update_cell(lastRow, 1, user)
+                wks.update_cell(lastRow, 4, 1)
+
+                usrCnt = 1
+
         case 'himbo':
             usrRow = wks.find(user).row
 
@@ -95,6 +123,14 @@ def usrInc(user, col):
             usrCnt += 1
 
             wks.update_cell(usrRow, 5, usrCnt)
+
+        case 'piss':
+            usrRow = wks.find(user).row
+
+            usrCnt = int(wks.cell(usrRow,6).value)
+            usrCnt += 1
+
+            wks.update_cell(usrRow, 6, usrCnt)
 
     return usrCnt
 
@@ -119,6 +155,25 @@ def usrCnt(user, col):
 
             except:
                 usrCnt = 0
+        
+        case 'hug':
+            try:
+                usrRow = wks.find(user).row
+
+                usrCnt = int(wks.cell(usrRow,4).value)
+
+            except:
+                usrCnt = 0
+
+        case 'himbo':
+            usrRow = wks.find(user).row
+
+            usrCnt = int(wks.cell(usrRow,5).value)
+
+        case 'piss':
+            usrRow = wks.find(user).row
+
+            usrCnt = int(wks.cell(usrRow,6).value)
 
     return usrCnt
 
