@@ -23,7 +23,7 @@ class Bot(commands.Bot):
         himboSet(0)
         # Starting routines that have been created
         # self.sending.start()
-        self.socials.start()
+        self.socialSched.start()
 
         await bot.wait_for_ready()
         # channel = bot.get_channel('kaikendoh')
@@ -142,6 +142,18 @@ class Bot(commands.Bot):
     async def bs(self, ctx: commands.Context):
         if ctx.author.is_mod:
             await ctx.send(f'{bsMsg}')
+
+    # questions command
+    @commands.command()
+    async def age(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{ageMsg}')
+
+    # questions command
+    @commands.command()
+    async def raiders(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{raidersMsg}')
 
     # jam command
     @commands.command()
@@ -542,7 +554,7 @@ class Bot(commands.Bot):
     #     await channel.send(discordMsg)
 
     @routines.routine(minutes=20.0, iterations=0)
-    async def socials(self):
+    async def socialSched(self):
         await self.wait_for_ready() 
         channel = self.get_channel('zeakthehusky')
         await channel.send(socialsMsg)
