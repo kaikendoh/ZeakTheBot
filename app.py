@@ -112,18 +112,41 @@ class Bot(commands.Bot):
     async def fc(self, ctx: commands.Context):
         await ctx.send(fcMsg1)
 
-    # shoutout command
+    # biobreak command
     @commands.command()
     async def biobreak(self, ctx: commands.Context):
         if ctx.author.is_mod:
             await ctx.send(f'Quote 31: I HAVE TO PEE')
+
+    # ttv lobby command
+    @commands.command()
+    async def ttv(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{ttvMsg}')
+
+    # spoilers command
+    @commands.command()
+    async def spoilers(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{spoilerMsg}')
+
+    # questions command
+    @commands.command()
+    async def questions(self, ctx: commands.Context):
+        if ctx.author.is_mod:
+            await ctx.send(f'{qMsg}')
+
+    # jam command
+    @commands.command()
+    async def jam(self, ctx: commands.Context):
+        await ctx.send(jamMsg)
 
     # ban command
     @commands.command()
     @commands.cooldown(1, 5, commands.Bucket.channel)
     async def ban(self, ctx: commands.Context, user: twitchio.User=None):
         if user == None or user.name == ctx.author.name:
-            await ctx.send(f"You can't ban yourself!")
+            await ctx.send(f"You can't ban yourself! zeakthPat")
         else:
             name = user.display_name
             banCnt = usrInc(name, 'ban')

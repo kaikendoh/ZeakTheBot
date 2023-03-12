@@ -23,6 +23,7 @@ fcMsg2 = "Zeak's DBD friend code is ZeakTheHusky.TTV#92e6"
 qMsg = "Zeak will regularly ask rhetorical questions and talk to himself about the game. Please do not answer these questions unless Zeak SPECIFICALLY asks chat. You will get warned and then timed out. This rule is for PvE/Story based games"
 spoilerMsg = "Please do not spoil or explain game mechanics unless explicitly asked by Zeak."
 ttvMsg = "Looks like there's a TTV in our lobby, if they are live and you wanna see from their perspective, please be kind and respectful no matter what zeakthLove"
+jamMsg = "Dance Dance AsterBongo catJAM zeakthDance zeakthDance AsterBongo dogJAM Dance Dance"
 
 def heartRand():
     emotes = ['zeakthLove', 'zeakthPride']
