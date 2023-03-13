@@ -233,6 +233,11 @@ def randTrivia():
     soup2 = BeautifulSoup(webpage2, "html.parser")
 
     title = soup2.find('th', class_='center bold').get_text(strip=True)
-    trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
+    print(title)
+    try:
+        trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
+
+    except:
+        trivia = "Something wrong happened, try the command again!"
 
     return title, trivia
