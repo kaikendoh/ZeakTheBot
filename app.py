@@ -547,6 +547,11 @@ class Bot(commands.Bot):
             except IndexError:
                 await ctx.send('No survivor/killer found!')
 
+    @commands.command()
+    async def trivia(self, ctx:commands.Context):
+        title, trivia = randTrivia()
+        await ctx.send(f'{title} - {trivia}')
+
     # @routines.routine(seconds=2.0, iterations=0)
     # async def sending(self):
     #     await self.wait_for_ready() 

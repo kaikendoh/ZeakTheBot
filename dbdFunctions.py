@@ -3,6 +3,7 @@ import requests
 import re
 import gspread
 import pandas as pd
+import random
 from config import *
 
 # Import perks google sheets as dataframe
@@ -197,3 +198,41 @@ def u_perks(name):
     perks = f"{name}'s unique perks are: {perk1}, {perk2}, and {perk3}."
 
     return perks
+
+def randTrivia():
+    k_url = "https://deadbydaylight.fandom.com/wiki/Category:Killers"
+    s_url = "https://deadbydaylight.fandom.com/wiki/Category:Survivors"
+
+    k_webpage = requests.get(k_url).content
+    k_soup = BeautifulSoup(k_webpage, "html.parser")
+
+    s_webpage = requests.get(s_url).content
+    s_soup = BeautifulSoup(s_webpage, "html.parser")
+
+    k_fullFind = k_soup.find_all('a', href=re.compile('^/wiki/'))
+    s_fullFind = s_soup.find_all('a', href=re.compile('^/wiki/'))
+
+    k_eleList = []
+
+    for element in k_fullFind:
+        k_eleList.append(element['href'])
+
+    s_eleList = []
+
+    for element in s_fullFind:
+        s_eleList.append(element['href'])
+
+    k_eleList = k_eleList[22:-3]
+    s_eleList = s_eleList[22:-3]
+
+    eleList = k_eleList + s_eleList
+
+    randEle = random.choice(eleList)
+    randurl = 'https://deadbydaylight.fandom.com{a}'.format(a=randEle)
+    webpage2 = requests.get(randurl).content
+    soup2 = BeautifulSoup(webpage2, "html.parser")
+
+    title = soup2.find('th', class_='center bold').get_text(strip=True)
+    trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
+
+    return title, trivia
