@@ -84,6 +84,8 @@ def usrInc(user, col):
                 lastRow = len(wks.get_all_values()) + 1
                 wks.update_cell(lastRow, 1, user)
                 wks.update_cell(lastRow, 2, 1)
+                wks.update_cell(lastRow, 3, 0)
+                wks.update_cell(lastRow, 4, 0)
 
                 usrCnt = 1
         case 'boop':
@@ -99,6 +101,8 @@ def usrInc(user, col):
                 lastRow = len(wks.get_all_values()) + 1
                 wks.update_cell(lastRow, 1, user)
                 wks.update_cell(lastRow, 3, 1)
+                wks.update_cell(lastRow, 2, 0)
+                wks.update_cell(lastRow, 4, 0)
 
                 usrCnt = 1
 
@@ -115,6 +119,8 @@ def usrInc(user, col):
                 lastRow = len(wks.get_all_values()) + 1
                 wks.update_cell(lastRow, 1, user)
                 wks.update_cell(lastRow, 4, 1)
+                wks.update_cell(lastRow, 2, 0)
+                wks.update_cell(lastRow, 3, 0)
 
                 usrCnt = 1
 
