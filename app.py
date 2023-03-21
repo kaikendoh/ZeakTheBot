@@ -98,8 +98,8 @@ class Bot(commands.Bot):
     async def so(self, ctx: commands.Context, user: twitchio.User):
         if ctx.author.is_mod:
             chanInfo = await self.fetch_channel(user.name)
-            authInfo = ctx.get_user(ctx.author.name)
-            await ctx.send(f'{user.display_name} is an awesome streamer! They were last seen playing {chanInfo.game_name}. Check them out at http://twitch.tv/{user.channel.name} zeakthDance')
+            # authInfo = ctx.get_user(ctx.author.name)
+            await ctx.send(f'{user.display_name} is an awesome streamer! They were last seen playing {chanInfo.game_name}. Check them out at http://twitch.tv/{user.name} zeakthDance')
 
     # voice chat command
     @commands.command()
