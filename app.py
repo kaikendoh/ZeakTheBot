@@ -314,13 +314,21 @@ class Bot(commands.Bot):
 
     # misspelled socials command
     @commands.command()
+    async def social(self, ctx: commands.Context):
+        if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
+            name = 'ZeakTheHusky'
+            himboCnt = usrInc(name, 'himbo')
+            await ctx.send(f"zeakthLUL Zeak misspelled the command. Now it's {himboCnt} himbo moment(s) this stream zeakthHuh")
+
+    # misspelled discord command
+    @commands.command()
     async def disocrd(self, ctx: commands.Context):
         if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
             name = 'ZeakTheHusky'
             himboCnt = usrInc(name, 'himbo')
             await ctx.send(f"zeakthLUL Zeak misspelled the command. Now it's {himboCnt} himbo moment(s) this stream zeakthHuh")
 
-    # misspelled socials command
+    # misspelled twitter command
     @commands.command()
     async def tiwtter(self, ctx: commands.Context):
         if ctx.author.is_broadcaster or ctx.author.name == 'kaikendoh':
