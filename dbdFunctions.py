@@ -144,8 +144,11 @@ def stats_scrape(name):
     title = soup.find_all('table', class_='infoboxtable')[0].find_all('th', class_='center bold')[0].get_text(separator=' ', strip=True)
     title = re.sub(' +', ' ', title)
     
-    name_index = td_scrape(soup, 'Name')
-    name = soup.find_all('td', class_='valueColumn')[name_index].get_text(separator=' ', strip=True).replace('\n', '')
+    try:
+        name_index = td_scrape(soup, 'Name')
+        name = soup.find_all('td', class_='valueColumn')[name_index].get_text(separator=' ', strip=True).replace('\n', '')
+    except:
+        name = "None"
 
     radius_index = td_scrape(soup, 'Terror Radius')
     radius = soup.find_all('td', class_='valueColumn')[radius_index].get_text(separator=' ', strip=True).replace('\n', '')
