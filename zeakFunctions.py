@@ -188,5 +188,8 @@ def usrCnt(user, col):
 def himboSet(himboNum):
     wks = sh.worksheet('Counts')
 
-    wks.update_cell(2,5,himboNum)
+    user = 'ZeakTheHusky'
 
+    usrRow = wks.find(user).row
+
+    wks.update_cell(usrRow, 5, himboNum)
