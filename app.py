@@ -95,6 +95,7 @@ class Bot(commands.Bot):
 
     # shoutout command
     @commands.command()
+    @commands.cooldown(1, 5, commands.Bucket.channel)
     async def so(self, ctx: commands.Context, user: twitchio.User):
         if ctx.author.is_mod:
             chanInfo = await self.fetch_channel(user.name)
