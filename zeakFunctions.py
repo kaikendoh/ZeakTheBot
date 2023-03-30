@@ -22,7 +22,7 @@ fcMsg2 = "Zeak's DBD friend code is ZeakTheHusky.TTV#92e6"
 
 qMsg = "Zeak will regularly ask rhetorical questions and talk to himself about the game. Please do not answer these questions unless Zeak SPECIFICALLY asks chat. You will get warned and then timed out. This rule is for PvE/Story based games"
 spoilerMsg = "Please do not spoil or explain game mechanics unless explicitly asked by Zeak."
-bsMsg = "Please do not backseat Zeak, let him suffer through his struggles! zeakthSad"
+bsMsg = "Please no backseating, let Zeak suffer through his struggles! zeakthSad"
 ttvMsg = "Looks like there's a TTV in our lobby, if they are live and you wanna see from their perspective, please be kind and respectful no matter what zeakthLove"
 raidersMsg = "Welcome on in raiders! If you'd like to help out our Husky's metrics, you can come in as a viewer by hitting refresh or clicking on ZeakTheHusky profile twice to avoid the ads! zeakthLove"
 ageMsg = "Hey guys, even though it's not against TOS to reveal age, please refrain from doing so here. If you reveal you are under 18, you will be immediately banned."
