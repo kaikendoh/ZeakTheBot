@@ -128,14 +128,12 @@ class Bot(commands.Bot):
     # spoilers command
     @commands.command()
     async def spoilers(self, ctx: commands.Context):
-        if ctx.author.is_mod:
-            await ctx.send(f'{spoilerMsg}')
+        await ctx.send(f'{spoilerMsg}')
 
     # questions command
     @commands.command()
     async def questions(self, ctx: commands.Context):
-        if ctx.author.is_mod:
-            await ctx.send(f'{qMsg}')
+        await ctx.send(f'{qMsg}')
 
     # questions command
     @commands.command()
