@@ -79,8 +79,16 @@ def perk_scrape(perk):
     wks = sh.worksheet('Names')
     perks_df = pd.DataFrame(wks.get_all_records())
 
+    memewks = sh.worksheet('Memes')
+
     if perks_df['name'].eq(perk).any():
         perkurl = perks_df.loc[perks_df['name'] == perk, 'url'].values[0]
+    elif memewks.find(perk).row:
+        memeRow = memewks.find(perk).row
+        perk_name = memewks.cell(memeRow,2).value
+        perk_desc = memewks.cell(memeRow,3).value
+        
+        return perk_name, perk_desc
     else:
         perkurl = case_except(perk).strip().replace(" ", "_")
 
