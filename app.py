@@ -347,10 +347,19 @@ class Bot(commands.Bot):
     @commands.command()
     async def aster(self, ctx: commands.Context):
         if ctx.author.name == 'asterthebull':
-            await ctx.send("That's you!")
+            await ctx.send("That's you! You can use !me instead zeakthLove")
         else:
             msg = 'AsterBongo'
             await ctx.send(f"{msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg}")
+
+    # aster command
+    @commands.command()
+    async def me(self, ctx: commands.Context):
+        if ctx.author.name == 'asterthebull':
+            msg = 'AsterBongo'
+            await ctx.send(f"{msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg} {msg}")
+        else:
+            await ctx.send(f"You're not Aster! Try using !aster for the bongos!")
 
     # commandslist command
     @commands.command()
