@@ -118,7 +118,7 @@ class Bot(commands.Bot):
     @commands.command()
     async def biobreak(self, ctx: commands.Context):
         if ctx.author.is_mod:
-            await ctx.send(f'Quote 31: I HAVE TO PEE')
+            await ctx.send(f'!quote 31')
 
     # ttv lobby command
     @commands.command()
