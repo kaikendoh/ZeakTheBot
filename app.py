@@ -26,8 +26,8 @@ class Bot(commands.Bot):
         # self.socialSched.start()
 
         await bot.wait_for_ready()
-        channel = bot.get_channel('kaikendoh')
-        # channel = bot.get_channel('zeakthehusky')
+        # channel = bot.get_channel('kaikendoh')
+        channel = bot.get_channel('zeakthehusky')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
 
@@ -99,8 +99,10 @@ class Bot(commands.Bot):
     async def so(self, ctx: commands.Context, user: twitchio.User):
         if ctx.author.is_mod:
             chanInfo = await self.fetch_channel(user.name)
-            # authInfo = ctx.get_user(ctx.author.name)
+            mybot = self.create_user(BROADCASTER_ID, BROADCASTER_NICK)
+
             await ctx.send(f'{user.display_name} is an awesome streamer! zeakthDance zeakthDance They were last seen playing {chanInfo.game_name}. Check them out at http://twitch.tv/{user.name}')
+            await mybot.shoutout(token=TWITCH_BOT_TOKEN, moderator_id=self.user_id, to_broadcaster_id=user.id)
 
     # voice chat command
     @commands.command()
