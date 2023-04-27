@@ -246,7 +246,7 @@ def randTrivia():
     soup2 = BeautifulSoup(webpage2, "html.parser")
 
     title = soup2.find('th', class_='center bold').get_text(strip=True)
-    print(title)
+  
     try:
         trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
 
@@ -272,7 +272,7 @@ def specTrivia(name):
     soup2 = BeautifulSoup(webpage2, "html.parser")
 
     title = soup2.find('th', class_='center bold').get_text(strip=True)
-    print(title)
+  
     try:
         trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
 
