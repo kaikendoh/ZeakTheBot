@@ -23,7 +23,7 @@ class Bot(commands.Bot):
         himboSet(0)
         # Starting routines that have been created
         # self.sending.start()
-        # self.socialSched.start()
+        self.socialSched.start()
 
         await bot.wait_for_ready()
         # channel = bot.get_channel('kaikendoh')
