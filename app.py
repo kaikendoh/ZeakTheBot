@@ -23,11 +23,11 @@ class Bot(commands.Bot):
         himboSet(0)
         # Starting routines that have been created
         # self.sending.start()
-        self.socialSched.start()
+        # self.socialSched.start()
 
         await bot.wait_for_ready()
-        # channel = bot.get_channel('kaikendoh')
-        channel = bot.get_channel('zeakthehusky')
+        channel = bot.get_channel('kaikendoh')
+        # channel = bot.get_channel('zeakthehusky')
         await channel.send('zeakthHype Beep Boop zeakthHype')
 
 
@@ -564,8 +564,13 @@ class Bot(commands.Bot):
                 await ctx.send('No survivor/killer found!')
 
     @commands.command()
-    async def trivia(self, ctx:commands.Context):
-        title, trivia = randTrivia()
+    async def trivia(self, ctx:commands.Context, *, cmd=None):
+        if cmd==None:
+            title, trivia = randTrivia()
+
+        else:
+            title, trivia = specTrivia(cmd)
+
         await ctx.send(f'{title} - {trivia}')
 
     # @routines.routine(seconds=2.0, iterations=0)

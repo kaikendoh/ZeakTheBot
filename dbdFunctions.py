@@ -254,3 +254,29 @@ def randTrivia():
         trivia = "Something wrong happened, try the command again!"
 
     return title, trivia
+
+def specTrivia(name):
+    wks = sh.worksheet('Names')
+    names_df = pd.DataFrame(wks.get_all_records())
+
+    if names_df['name'].eq(name).any():
+        nameurl = names_df.loc[names_df['name'] == name.lower(), 'url'].values[0]
+    else:
+        nameurl = case_except(name).strip().replace(" ", "_")
+
+    specurl = "https://deadbydaylight.fandom.com/wiki/{a}".format(a=nameurl)
+
+
+    # randurl = 'https://deadbydaylight.fandom.com{a}'.format(a=randEle)
+    webpage2 = requests.get(specurl).content
+    soup2 = BeautifulSoup(webpage2, "html.parser")
+
+    title = soup2.find('th', class_='center bold').get_text(strip=True)
+    print(title)
+    try:
+        trivia = random.choice(soup2.find('span', id='Trivia').findNext('ul').find_all('li', recursive=False)).get_text(separator=' ', strip=True)
+
+    except:
+        trivia = "Something wrong happened, try the command again!"
+
+    return title, trivia
