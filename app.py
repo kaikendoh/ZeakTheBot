@@ -548,7 +548,7 @@ class Bot(commands.Bot):
                 await ctx.send('No killer found!')
 
             except ValueError:
-                await ctx.send('No stat info on survivors!')
+                await ctx.send('No stat info on survivors! For their unique perks, try !unique <name>')
 
     @commands.command()
     async def unique(self, ctx:commands.Context, *, name):
